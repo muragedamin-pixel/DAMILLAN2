@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TO MY LOVELY SOUL ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <iframe 
+      src="https://my.spline.design/3dpathslines1copy-GQjM8fUWsdOiwhA0UST2QKvk/" 
+      frameborder="0" 
+      style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;"
+      allow="autoplay; fullscreen"
+    ></iframe>
+
+    <div id="heart-screen">
+        <button id="heart-btn">❤️</button>
+        <h2>Click My Heart ❤️</h2>
+    </div>
+
+    <div id="letter" class="hidden">
+        <h1>MY WONDERFUL SOUL❤️</h1>
+
+        <p>
+            Every moment with you is a blessing.
+            Thank you for making my life beautiful ❤️
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+
+    <style>
+    body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    font-family: Arial, sans-serif;
+}
+
+#heart-screen {
+    text-align: center;
+}
+
+#heart-btn {
+    font-size: 100px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.hidden {
+    display: none;
+}
+
+#letter {
+    background: pink;
+    padding: 30px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+ body {
+    background: transparent;
+    font-family: 'Georgia', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    color: #ff4d6d;
+}
+
+p {
+    font-size: 20px;
+    line-height: 1.8;
+    color: #444;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    background: #ff4d6d;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+#surprise {
+    margin-top: 20px;
+    font-size: 24px;
+    color: #ff4d6d;
+    font-weight: bold;
+}
+  </style>
+
+    <div class="letter">
+        <h1 style="text-align: center;"> HEY MY LOVE❤️</h1>
+
+        <p id="message">
+            To My Beautiful Girl ❤️
+          <br><br>
+          From the moment you came into my life, something changed. What started as simple conversations quickly became the part of my day that I look forward to the most.
+          Every message from you makes me smile, every laugh we share stays in my mind, and every moment spent getting to know you makes me appreciate you even more.
+          <br><br>
+          There is something truly special about you. It's in the way you speak, the way you smile, and the way you make everything around you feel brighter.
+          You have a beautiful heart, and without even realizing it, you've found a place in mine.
+          <br><br>
+          You are beautiful not only because of how you look, but because of who you are.
+          Your kindness, your personality, and your spirit are the things that make you unforgettable.
+          <br><br>
+          Thank you for giving me a chance to know you. Thank you for being the wonderful woman you are.
+          And thank you for making my heart feel something so genuine and exciting.
+          <br><br>
+           No matter where this journey takes us, I want you to know that meeting you has already made my world a little brighter.
+          Yours, with all my affection,
+          <br><br>
+           FROM YOUR LOVER DAMIN ❤️. 
+          AND I WISH YOU A HAPPY BIRTHDAY MY LOVE<br> AND MAY YOU FOREVER CHEAT DEATH JUST TO BE WITH ME
+          <br>AND I YOU  WISH TO STEAL, STEAL MY HEART JUST TO KEEP ME
+          <br>AND IF YOU LIE, BE THE ONE LYING BESIDE ME EVERY DAY AND EVERT TIME
+        </p>
+
+        <button onclick="showSurprise()">
+            Click For A Surprise 💖
+        </button>
+
+        <div id="surprise"></div>
+    </div>
+  
+    <div id="CLICK ME!"></div>
+        
+    <script src="script.js"></script>
+        <script>
+  setInterval(() => {
+    const heart = document.createElement("div");
+
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "100vh";
+    heart.style.fontSize = "30px";
+
+    document.body.appendChild(heart);
+
+    let pos = 100;
+    const move = setInterval(() => {
+        pos--;
+        heart.style.top = pos + "vh";
+
+        if (pos < -10) {
+            clearInterval(move);
+            heart.remove();
+        }
+    }, 20);
+}, 500);
+function showSurprise() {
+    document.getElementById("surprise").innerHTML =
+        "💖 I Love You More Every Day Than Ever 💖";
+}     
+ const heartBtn = document.getElementById("heart-btn");
+
+heartBtn.addEventListener("click", () => {
+    document.getElementById("heart-screen").style.display = "none";
+    document.getElementById("letter").classList.remove("hidden");
+});           
+        </script>        
+</body>
+</html>
