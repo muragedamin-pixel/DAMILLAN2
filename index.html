@@ -13,10 +13,11 @@
 }
 
 body{
-    background-image: url('heart4.jpg');
     overflow:hidden;
     height:100vh;
-    background:linear-gradient(135deg,#ff0844,#ff4d6d,#ff758c,#ff99ac);
+    /* background image with a translucent gradient overlay */
+    background: linear-gradient(135deg, rgba(255,8,68,0.5), rgba(255,77,109,0.4), rgba(255,117,140,0.3), rgba(255,153,172,0.2)), url('heart4.jpg') no-repeat center center;
+    background-size: cover;
     scroll-snap-type: Y mandatory;
 }
 
