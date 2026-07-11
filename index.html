@@ -3,141 +3,751 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YOU&ME</title>
+<title>You &amp; Me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
 
 <style>
-*{
+  :root{
+    --wine-950:#170810;
+    --wine-900:#2a0f19;
+    --wine-800:#3d1522;
+    --rose-gold:#d9a679;
+    --blush:#f3d9cf;
+    --cream:#faf1ec;
+    --ember:#e2685a;
+  }
+
+  *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-}
+  }
 
-body{
-    overflow:hidden;
+  html{
+    scroll-behavior:smooth;
+  }
+
+  body{
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(217,166,121,0.10), transparent 60%),
+      linear-gradient(180deg, var(--wine-950), var(--wine-900) 40%, var(--wine-800));
+    color:var(--cream);
+    font-family:'EB Garamond', serif;
+    scroll-snap-type:y mandatory;
+    overflow-y:scroll;
+    overflow-x:hidden;
     height:100vh;
-    /* background image with a translucent gradient overlay */
-    background: linear-gradient(135deg, rgba(255,8,68,0.5), rgba(255,77,109,0.4), rgba(255,117,140,0.3), rgba(255,153,172,0.2)), url('heart4.jpg') no-repeat center center;
-    background-size: cover;
-    scroll-snap-type: Y mandatory;
-}
+  }
 
-.hearts{
+  body::-webkit-scrollbar{ display:none; }
+
+  /* ambient floating hearts, fixed behind everything */
+  .hearts{
     position:fixed;
-    width:100%;
-    height:100%;
+    inset:0;
     overflow:hidden;
-}
+    pointer-events:none;
+    z-index:1;
+  }
 
-.heart{
+  .heart{
     position:absolute;
-    bottom:-50px;
-    color:rgba(255,255,255,.8);
-    font-size:20px;
+    bottom:-60px;
+    color:rgba(217,166,121,0.55);
+    filter:drop-shadow(0 0 6px rgba(226,104,90,0.35));
     animation:float linear infinite;
-    text-shadow:0 0 10px white;
-}
+  }
 
-@keyframes float{
-    0%{
-        transform:translateY(0) rotate(0deg) scale(0.8);
-        opacity:0;
-    }
+  @keyframes float{
+    0%{ transform:translateY(0) rotate(0deg) scale(0.8); opacity:0; }
+    12%{ opacity:1; }
+    100%{ transform:translateY(-115vh) rotate(320deg) scale(1.4); opacity:0; }
+  }
 
-    10%{
-        opacity:1;
-    }
+  section{
+    position:relative;
+    z-index:2;
+    height:100vh;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    scroll-snap-align:start;
+    padding:0 8vw;
+  }
 
-    100%{
-        transform:translateY(-110vh) rotate(360deg) scale(1.5);
-        opacity:0;
-    }
-}
+  /* ---------- Hero ---------- */
+  .hero .eyebrow{
+    font-family:'Cormorant Garamond', serif;
+    letter-spacing:0.35em;
+    text-transform:uppercase;
+    font-size:0.8rem;
+    color:var(--rose-gold);
+    opacity:0.85;
+    margin-bottom:1.5rem;
+  }
 
-.content{
+  h1{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(2.8rem, 8vw, 5.5rem);
+    color:var(--cream);
+    text-shadow:0 0 40px rgba(226,104,90,0.25);
+    line-height:1.1;
+  }
+
+  .underline-svg{
+    display:block;
+    margin:0.6rem auto 0;
+    width:min(60vw, 380px);
+    height:24px;
+  }
+
+  .underline-svg path{
+    fill:none;
+    stroke:var(--rose-gold);
+    stroke-width:3;
+    stroke-linecap:round;
+    stroke-dasharray:400;
+    stroke-dashoffset:400;
+    animation:draw 1.8s ease forwards 0.6s;
+  }
+
+  @keyframes draw{
+    to{ stroke-dashoffset:0; }
+  }
+
+  .hero p.sub{
+    margin-top:1.8rem;
+    font-size:clamp(1rem, 2vw, 1.3rem);
+    font-style:italic;
+    color:var(--blush);
+    opacity:0;
+    animation:fadeUp 1s ease forwards 1.8s;
+  }
+
+  .scroll-hint{
     position:absolute;
-    top:50%;
+    bottom:2.5rem;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--rose-gold);
+    opacity:0;
+    animation:fadeUp 1s ease forwards 2.4s;
+  }
+
+  .scroll-hint::after{
+    content:'';
+    display:block;
+    width:1px;
+    height:28px;
+    background:var(--rose-gold);
+    margin:0.6rem auto 0;
+    animation:pulseLine 2s ease-in-out infinite;
+  }
+
+  @keyframes pulseLine{
+    0%,100%{ opacity:0.3; transform:scaleY(0.7); }
+    50%{ opacity:1; transform:scaleY(1); }
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- Letter lines ---------- */
+  .line{
+    max-width:640px;
+  }
+
+  .line .mark{
+    display:block;
+    font-size:1.1rem;
+    color:var(--ember);
+    margin-bottom:1.2rem;
+    opacity:0.8;
+  }
+
+  .line p{
+    font-size:clamp(1.3rem, 3vw, 1.9rem);
+    font-style:italic;
+    line-height:1.5;
+    font-family:'Cormorant Garamond', serif;
+    color:var(--cream);
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+
+  .line.visible p{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .line.shout p{
+    font-size:clamp(1.5rem, 3.6vw, 2.3rem);
+    color:var(--rose-gold);
+  }
+
+  /* ---------- Finale ---------- */
+  .finale .content{
+    max-width:600px;
+  }
+
+  .finale p.question{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:clamp(1.2rem, 3vw, 1.6rem);
+    color:var(--blush);
+    letter-spacing:0.02em;
+    margin-bottom:2.2rem;
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity 1s ease, transform 1s ease;
+  }
+
+  .finale.visible p.question{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .signature-svg{
+    width:min(70vw, 280px);
+    margin:0 auto 2.5rem;
+  }
+
+  .signature-svg path{
+    fill:none;
+    stroke:var(--rose-gold);
+    stroke-width:2;
+    stroke-dasharray:1200;
+    stroke-dashoffset:1200;
+  }
+
+  .finale.visible .signature-svg path{
+    animation:draw 2.2s ease forwards 0.3s;
+  }
+
+  .go-btn{
+    background:transparent;
+    border:1px solid var(--rose-gold);
+    color:var(--rose-gold);
+    padding:0.9rem 2.4rem;
+    font-family:'EB Garamond', serif;
+    font-size:1rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    cursor:pointer;
+    border-radius:2px;
+    transition:background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+    opacity:0;
+    transform:translateY(20px);
+  }
+
+  .finale.visible .go-btn{
+    opacity:1;
+    transform:translateY(0);
+    transition:opacity 1s ease 2.3s, transform 1s ease 2.3s, background 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .go-btn:hover{
+    background:var(--rose-gold);
+    color:var(--wine-950);
+    box-shadow:0 0 25px rgba(217,166,121,0.4);
+  }
+
+  .go-btn:focus-visible{
+    outline:2px solid var(--blush);
+    outline-offset:3px;
+  }
+
+  /* ---------- Envelope section ---------- */
+  .envelope-section .prompt{
+    text-align:center;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:clamp(1.1rem, 2.6vw, 1.4rem);
+    color:var(--blush);
+    margin-bottom:2.4rem;
+    opacity:0;
+  }
+
+  .envelope-section.visible .prompt{
+    animation:fadeUp 1s ease forwards 0.2s;
+  }
+
+  .stage{
+    position:relative;
+    z-index:2;
+    width:min(90vw, 480px);
+    perspective:1400px;
+  }
+
+  .envelope{
+    position:relative;
+    width:100%;
+    aspect-ratio:3/2;
+    opacity:0;
+  }
+
+  .envelope-section.visible .envelope{
+    animation:fadeUp 1s ease forwards 0.6s;
+  }
+
+  .envelope-body{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(160deg, #33121e, #241019);
+    border:1px solid rgba(217,166,121,0.35);
+    border-radius:4px;
+    box-shadow:0 30px 60px rgba(0,0,0,0.45);
+  }
+
+  .flap{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:55%;
+    background:linear-gradient(160deg, #3d1522, #2a0f19);
+    clip-path:polygon(0 0, 100% 0, 50% 100%);
+    transform-origin:top center;
+    transition:transform 1s cubic-bezier(.6,.1,.3,1);
+    border:1px solid rgba(217,166,121,0.35);
+    z-index:3;
+  }
+
+  .stage.open .flap{
+    transform:rotateX(180deg);
+  }
+
+  .seal{
+    position:absolute;
+    top:38%;
     left:50%;
     transform:translate(-50%,-50%);
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e2685a, #a8382c 70%);
+    box-shadow:0 6px 16px rgba(0,0,0,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:4;
+    transition:transform 0.5s ease, opacity 0.5s ease;
+    border:none;
+  }
+
+  .seal svg{
+    width:26px;
+    height:26px;
+    fill:var(--cream);
+    pointer-events:none;
+  }
+
+  .seal:hover{
+    transform:translate(-50%,-50%) scale(1.06);
+  }
+
+  .stage.open .seal{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(0.4);
+    pointer-events:none;
+  }
+
+  .seal:focus-visible{
+    outline:2px solid var(--blush);
+    outline-offset:4px;
+  }
+
+  .letter-card{
+    position:absolute;
+    left:6%;
+    right:6%;
+    bottom:6%;
+    background:linear-gradient(180deg, var(--cream), var(--blush));
+    color:#3d1522;
+    border-radius:3px;
+    padding:2.2rem 1.8rem;
     text-align:center;
-    color:white;
-    z-index:10;
-}
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    transform:translateY(6%);
+    opacity:0;
+    transition:transform 1.1s ease 0.35s, opacity 1s ease 0.35s;
+    z-index:2;
+  }
 
-h1{
-    font-size:70px;
-    font-family:cursive;
-    text-shadow:0 0 20px white;
-}
+  .stage.open .letter-card{
+    transform:translateY(20%);
+    opacity:1;
+  }
 
-p{
-    font-size:24px;
-    margin-top:15px;
-}
-    button{
-        background: url('download/heart3.jpg');
-        border: none;
-        color: white;
-        padding: 15px;
-        margin: 0;
-        position: absolute;
-        top:  110%;
-        left: 45%;
-       transform: translate (-50% -50%);
-        font-family: serif;
-        font-size: 100%;
+  .letter-card .eyebrow{
+    font-size:0.7rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    color:var(--ember);
+    margin-bottom:0.8rem;
+  }
+
+  .letter-card .answer{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.4rem, 4vw, 2rem);
+    line-height:1.35;
+  }
+
+  .letter-card .signature{
+    margin-top:1.2rem;
+    font-family:'Alex Brush', cursive;
+    font-size:2rem;
+    color:var(--ember);
+  }
+
+  /* ---------- Slideshow overlay ---------- */
+  .slideshow{
+    position:fixed;
+    inset:0;
+    z-index:20;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 1.2s ease;
+  }
+
+  .slideshow.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    overflow:hidden;
+    transition:opacity 1.4s ease;
+  }
+
+  .slide.showing{
+    opacity:1;
+    z-index:1;
+  }
+
+  .slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    animation:kenburns 7s ease-in-out forwards;
+  }
+
+  .slide:nth-child(odd) img{
+    animation-name:kenburnsAlt;
+  }
+
+  @keyframes kenburns{
+    from{ transform:scale(1) translate(0,0); }
+    to{ transform:scale(1.12) translate(-1.5%, -1%); }
+  }
+
+  @keyframes kenburnsAlt{
+    from{ transform:scale(1) translate(0,0); }
+    to{ transform:scale(1.12) translate(1.5%, 1%); }
+  }
+
+  .slideshow::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(23,8,16,0.35) 0%, rgba(23,8,16,0.1) 30%, rgba(23,8,16,0.1) 65%, rgba(23,8,16,0.75) 100%);
+    z-index:2;
+    pointer-events:none;
+  }
+
+  .slide-caption{
+    position:absolute;
+    bottom:8%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    text-align:center;
+    width:min(85vw, 520px);
+  }
+
+  .slide-caption .answer{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.3rem, 3.6vw, 2rem);
+    color:var(--cream);
+    text-shadow:0 2px 20px rgba(0,0,0,0.6);
+    opacity:0;
+  }
+
+  .slide-caption .signature{
+    margin-top:0.8rem;
+    font-family:'Alex Brush', cursive;
+    font-size:2.1rem;
+    color:var(--rose-gold);
+    opacity:0;
+  }
+
+  .slideshow.finale .slide-caption .answer,
+  .slideshow.finale .slide-caption .signature{
+    animation:fadeUp 1.2s ease forwards 0.4s;
+  }
+
+  .slideshow.finale .slide-caption .signature{
+    animation-delay:1s;
+  }
+
+  .dots{
+    position:absolute;
+    top:5%;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    display:flex;
+    gap:6px;
+  }
+
+  .dots span{
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:rgba(250,241,236,0.35);
+    transition:background 0.4s ease, transform 0.4s ease;
+  }
+
+  .dots span.on{
+    background:var(--rose-gold);
+    transform:scale(1.4);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{
+      animation-duration:0.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.01ms !important;
     }
+    .line p, .finale p.question, .go-btn, .envelope-section .prompt, .envelope{
+      opacity:1 !important;
+      transform:none !important;
+    }
+    .slide img{ animation:none !important; }
+  }
 </style>
-
 </head>
 <body>
 
 <div class="hearts" id="hearts"></div>
 
-<div class="content">
-    <h1>I Love You ❤️</h1>
-    <p>You make every heartbeat worth it.</p>
-    <p>My Life Lightens Up Everytime I'M with You My Love</p>
-    <p>You Make Me Feel Alive Everytime I Think Of You</p>
-    <p>Every Moment With You I just Realize How Much I cant Live Without You</p>
-    <P>And Everytime I Tell You How Much I Do Love  You I Just Cant Help But Shout whats In My Heart And Mind</P>
-    <p>I Just Wish You Could See Through MY Eyes And See It For Yourself</p>
-        <p>I LOVE YOU SOO MUCH HUNNY</p>
-        <br><br>
-        <p>DAMIN</p>
-    
-    <p id="LOOK!" style="text-align: center; font-family: serif; color: white;">WHAT IS BIGGER THAN OUR LOVE</p>
-    <button oneclick="window.location.href='ui.html'">CLICKME!</button>
+<section class="hero">
+  <div>
+    <p class="eyebrow">For you</p>
+    <h1>I Love You</h1>
+    <svg class="underline-svg" viewBox="0 0 380 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 16 Q 95 2, 190 14 T 372 12" />
+    </svg>
+    <p class="sub">You make every heartbeat worth it.</p>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<section class="letter">
+  <div class="line">
+    <span class="mark">❤</span>
+    <p>My life lightens up every time I'm with you, my love.</p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="line">
+    <span class="mark">❤</span>
+    <p>You make me feel alive every time I think of you.</p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="line">
+    <span class="mark">❤</span>
+    <p>Every moment with you, I realize how much I can't live without you.</p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="line">
+    <span class="mark">❤</span>
+    <p>And every time I try to tell you how much I love you, I can't help but shout what's in my heart and mind.</p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="line">
+    <span class="mark">❤</span>
+    <p>I just wish you could see it through my eyes, the way I see you.</p>
+  </div>
+</section>
+
+<section class="letter">
+  <div class="line shout">
+    <span class="mark">❤</span>
+    <p>I love you so much, hunny.</p>
+  </div>
+</section>
+
+<section class="finale">
+  <div class="content">
+    <p class="question">What is bigger than our love?</p>
+    <svg class="signature-svg" viewBox="0 0 280 90" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 55 C 30 20, 45 75, 60 45 C 75 15, 85 70, 100 50 C 115 30, 130 65, 148 48 C 160 38, 175 55, 190 45 C 205 35, 220 58, 240 48" />
+    </svg>
+    <button class="go-btn" id="continueBtn">Continue</button>
+  </div>
+</section>
+
+<section class="envelope-section" id="envelope-section">
+  <div>
+    <p class="prompt">Nothing is bigger than our love —<br>but here's what comes close.</p>
+
+    <div class="stage" id="stage">
+      <div class="envelope">
+        <div class="envelope-body"></div>
+        <div class="letter-card">
+          <p class="eyebrow">The Answer</p>
+          <p class="answer">Every little moment with you, hunny.</p>
+          <p class="signature">Damin</p>
+        </div>
+        <button class="seal" id="sealBtn" aria-label="Open the letter">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.4 2 4.8 5.6 4.2c2-.3 3.9.6 4.9 2.2C11.5 4.8 13.4 3.9 15.4 4.2 19 4.8 20.6 8.4 19 11.7 16.5 16.3 12 21 12 21z"/></svg>
+        </button>
+      </div>
     </div>
+  </div>
+</section>
+
+<div class="slideshow" id="slideshow">
+  <div class="dots" id="dots"></div>
+  <div id="slides"></div>
+  <div class="slide-caption">
+    <p class="answer">Every day I choose you again, hunny — and I always will.</p>
+    <p class="signature">Damin</p>
+  </div>
+</div>
+
 <script>
-  functon myFunction(){
-      wiindow.location.hrf="ui.html";
-  }  
-const container = document.getElementById("hearts");
+  // ambient floating hearts, shared across the whole page
+  const container = document.getElementById("hearts");
+  const glyphs = ["❤", "❤", "♡"];
 
-function createHeart(){
-
+  function createHeart(){
     const heart = document.createElement("div");
-
-    heart.classList.add("heart");
-
-    heart.innerHTML="❤";
-
-    heart.style.left=Math.random()*100+"vw";
-
-    heart.style.fontSize=(15+Math.random()*40)+"px";
-
-    heart.style.animationDuration=(5+Math.random()*8)+"s";
-
-    heart.style.opacity=Math.random();
-
+    heart.className = "heart";
+    heart.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (14 + Math.random() * 30) + "px";
+    heart.style.animationDuration = (7 + Math.random() * 9) + "s";
+    heart.style.opacity = Math.random() * 0.6 + 0.2;
     container.appendChild(heart);
+    setTimeout(() => heart.remove(), 17000);
+  }
 
-    setTimeout(()=>{
-        heart.remove();
-    },13000);
-}
+  setInterval(createHeart, 350);
 
-setInterval(createHeart,250);
+  // reveal letter lines, the finale, and the envelope section as they scroll into view
+  const revealTargets = document.querySelectorAll(".line, .finale, .envelope-section");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.5 });
+
+  revealTargets.forEach(el => observer.observe(el));
+
+  // "Continue" scrolls down to the envelope instead of leaving the page
+  document.getElementById("continueBtn").addEventListener("click", () => {
+    document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
+  });
+
+  // ---------- envelope + slideshow ----------
+  const photos = [
+    "photos/image1.jpg",
+    "photos/image2.jpg",
+    "photos/image3.jpg",
+    "photos/image4.jpg",
+    "photos/image5.jpg",
+    "photos/heart2.jpg",
+    "photos/image7.jpg",
+    "photos/image9.jpg",
+    "photos/image10.jpg",
+    "photos/image11.jpg",
+    "photos/image12.jpg",
+    "photos/image13.jpg",
+    "photos/image8.jpg"
+  ];
+
+  const slidesEl = document.getElementById("slides");
+  const dotsEl = document.getElementById("dots");
+  const slideshowEl = document.getElementById("slideshow");
+
+  photos.forEach((src, i) => {
+    const slide = document.createElement("div");
+    slide.className = "slide";
+    slide.innerHTML = `<img src="${src}" alt="Memory ${i + 1}">`;
+    slidesEl.appendChild(slide);
+
+    const dot = document.createElement("span");
+    dotsEl.appendChild(dot);
+  });
+
+  const slideEls = document.querySelectorAll(".slide");
+  const dotEls = document.querySelectorAll(".dots span");
+  let current = 0;
+  let slideTimer = null;
+
+  function showSlide(i){
+    slideEls.forEach((s, idx) => s.classList.toggle("showing", idx === i));
+    dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
+
+    if (i === photos.length - 1){
+      slideshowEl.classList.add("finale");
+      clearInterval(slideTimer);
+    }
+  }
+
+  function startSlideshow(){
+    slideshowEl.classList.add("active");
+    showSlide(0);
+    slideTimer = setInterval(() => {
+      current++;
+      if (current >= photos.length){
+        current = photos.length - 1;
+        clearInterval(slideTimer);
+        return;
+      }
+      showSlide(current);
+    }, 3200);
+  }
+
+  // click the wax seal to open the envelope, then hand off to the slideshow
+  const stage = document.getElementById("stage");
+  const sealBtn = document.getElementById("sealBtn");
+
+  sealBtn.addEventListener("click", () => {
+    stage.classList.add("open");
+    setTimeout(startSlideshow, 1300);
+  });
 </script>
 
 </body>
