@@ -417,7 +417,7 @@
 
   /* ---------- Slideshow overlay ---------- */
   .slideshow{
-    position:absolute;
+    position:fixed;
     inset:0;
     z-index:20;
     opacity:0;
@@ -444,7 +444,7 @@
   }
 
   .slide img{
-    width:90%;
+    width:100%;
     height:100%;
     object-fit:cover;
     animation:kenburns 7s ease-in-out forwards;
@@ -465,7 +465,7 @@
   }
 
   .slideshow::after{
-    content:'images';
+    content:'';
     position:absolute;
     inset:0;
     background:linear-gradient(180deg, rgba(23,8,16,0.35) 0%, rgba(23,8,16,0.1) 30%, rgba(23,8,16,0.1) 65%, rgba(23,8,16,0.75) 100%);
