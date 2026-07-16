@@ -17,7 +17,39 @@
     --blush:#f3d9cf;
     --cream:#faf1ec;
     --ember:#e2685a;
+    /* EDIT: this is the "sea" accent — a deep jewel-toned blue that mixes into the
+       wine background to read as a crystalline sea rather than plain water. Nudge
+       toward navy for a moodier sea, or teal for a brighter one. */
+    --sea-deep:#1c2c4a;
+    --sea-mid:#3a5b8a;
   }
+  .music-btn{
+    position:fixed;
+    top:25px;
+    right:25px;
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    color:#f3d9cf;
+    font-size:22px;
+    cursor:pointer;
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.35s;
+}
+
+.music-btn:hover{
+    background:rgba(217,166,121,.25);
+    transform:scale(1.08);
+    box-shadow:0 0 20px rgba(217,166,121,.45);
+}
 
   *{
     margin:0;
@@ -43,16 +75,140 @@
 
   body::-webkit-scrollbar{ display:none; }
 
-  /* ambient floating hearts, fixed behind everything */
+  /* ---------- Crystalline sea background ---------- */
+  /* EDIT: sits behind everything (z-index 0), a slowly breathing lattice of facet
+     lines and a light sheen sweeping across it, with tiny diamond "gems" twinkling
+     like light caught on a jeweled sea. Hearts (z-index 1) float above it. */
+  .crystal-sea{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    overflow:hidden;
+    pointer-events:none;
+  }
+
+  .crystal-sea .base{
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 100%, rgba(58,91,138,0.30), transparent 65%),
+      radial-gradient(ellipse 70% 40% at 20% 85%, rgba(28,44,74,0.35), transparent 60%),
+      radial-gradient(ellipse 70% 40% at 80% 90%, rgba(28,44,74,0.30), transparent 60%);
+  }
+
+  .crystal-sea .facets{
+    position:absolute;
+    inset:-12% -6%;
+    background:
+      repeating-linear-gradient(58deg, rgba(217,166,121,0.055) 0px, rgba(217,166,121,0.055) 1px, transparent 1px, transparent 46px),
+      repeating-linear-gradient(-58deg, rgba(58,91,138,0.09) 0px, rgba(58,91,138,0.09) 1px, transparent 1px, transparent 46px),
+      repeating-linear-gradient(2deg, rgba(250,241,236,0.03) 0px, rgba(250,241,236,0.03) 1px, transparent 1px, transparent 64px);
+    mix-blend-mode:screen;
+    animation:seaBreathe 22s ease-in-out infinite alternate;
+    transform-origin:50% 100%;
+  }
+
+  @keyframes seaBreathe{
+    0%{ transform:translateY(0) scale(1); }
+    100%{ transform:translateY(-2.5%) scale(1.035); }
+  }
+.slide::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    backdrop-filter:blur(2px);
+}
+  .crystal-sea .sheen{
+    position:absolute;
+    inset:-20% -30%;
+    background:linear-gradient(112deg,
+      transparent 42%,
+      rgba(250,241,236,0.05) 47%,
+      rgba(217,166,121,0.14) 50%,
+      rgba(250,241,236,0.05) 53%,
+      transparent 58%);
+    animation:sheenMove 11s linear infinite;
+  }
+
+  @keyframes sheenMove{
+    0%{ transform:translateX(-22%); }
+    100%{ transform:translateX(22%); }
+  }
+
+  .gem{
+    position:absolute;
+    width:var(--size, 7px);
+    height:var(--size, 7px);
+    background:linear-gradient(135deg, var(--cream), var(--rose-gold));
+    transform:rotate(45deg) scale(0.6);
+    box-shadow:0 0 7px rgba(217,166,121,0.65), 0 0 2px rgba(255,255,255,0.85);
+    opacity:0;
+    animation:twinkle var(--dur, 5s) ease-in-out infinite;
+    animation-delay:var(--delay, 0s);
+  }
+
+  @keyframes twinkle{
+    0%, 100%{ opacity:0; transform:rotate(45deg) scale(0.5); }
+    50%{ opacity:var(--peak, 0.9); transform:rotate(45deg) scale(1.15); }
+  }
+  #sparkles{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:9;
+}
+
+.sparkle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:#ffd98c;
+
+    box-shadow:
+        0 0 10px #ffd98c,
+        0 0 20px #ffd98c;
+
+    animation:sparkleFloat linear forwards;
+}
+
+@keyframes sparkleFloat{
+
+    from{
+        opacity:0;
+        transform:
+            translateY(0)
+            scale(.3);
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+        opacity:0;
+        transform:
+            translateY(-120px)
+            translateX(40px)
+            scale(1.3);
+    }
+
+}
+
+  /* ambient floating hearts, layered above the crystal sea */
   .hearts{
     position:fixed;
     inset:0;
     overflow:hidden;
     pointer-events:none;
     z-index:1;
-  }
-
+}
   .heart{
+    text-shadow:
+    0 0 10px #ff6b81;
+    0 0 20px #ff6b81;
+    0 0 40px #ff6b81;
     position:absolute;
     bottom:-60px;
     color:rgba(217,166,121,0.55);
@@ -60,12 +216,21 @@
     animation:float linear infinite;
   }
 
+  .heart.diamond{
+    color:rgba(243,217,207,0.7);
+    filter:drop-shadow(0 0 7px rgba(217,166,121,0.55));
+  }
+
   @keyframes float{
     0%{ transform:translateY(0) rotate(0deg) scale(0.8); opacity:0; }
     12%{ opacity:1; }
     100%{ transform:translateY(-115vh) rotate(320deg) scale(1.4); opacity:0; }
   }
+}
 
+section.visible{
+    transform:scale(1);
+}
   section{
     position:relative;
     z-index:2;
@@ -77,6 +242,8 @@
     text-align:center;
     scroll-snap-align:start;
     padding:0 8vw;
+    transform:scale(.96);
+    transition:1s;
   }
 
   /* ---------- Hero ---------- */
@@ -89,17 +256,34 @@
     opacity:0.85;
     margin-bottom:1.5rem;
   }
-
-  h1{
-    font-family:'Cormorant Garamond', serif;
+h1{
+    font-family:'Bodoni Moda', serif;
     font-style:italic;
     font-weight:500;
     font-size:clamp(2.8rem, 8vw, 5.5rem);
     color:var(--cream);
     text-shadow:0 0 40px rgba(226,104,90,0.25);
     line-height:1.1;
-  }
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #ffd6a5,
+        #fff
+    );
+    background-size:300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:shine 6s linear infinite;
+}
 
+@keyframes shine{
+    from{
+        background-position:-300%;
+    }
+    to{
+        background-position:300%;
+    }
+}
   .underline-svg{
     display:block;
     margin:0.6rem auto 0;
@@ -416,6 +600,10 @@
   }
 
   /* ---------- Slideshow overlay ---------- */
+  /* EDIT: photos now genuinely overlay one another — the incoming photo fades in
+     on top (z-index handled in JS) while the outgoing one is still fading out
+     beneath it, so for a couple of seconds both are visibly blended together
+     rather than one snapping out before the next appears. */
   .slideshow{
     position:fixed;
     inset:0;
@@ -423,6 +611,7 @@
     opacity:0;
     pointer-events:none;
     transition:opacity 1.2s ease;
+    background:var(--wine-950);
   }
 
   .slideshow.active{
@@ -435,20 +624,38 @@
     inset:0;
     opacity:0;
     overflow:hidden;
-    transition:opacity 3.2s ease;
+    transition:opacity 2.6s ease;
   }
 
   .slide.showing{
     opacity:1;
-    z-index:1;
   }
 
   .slide img{
-    width:100%;
-    height:100%;
+
+    width:min(82vw,700px);
+
+    height:auto;
+
+    aspect-ratio:3/4;
+
     object-fit:cover;
-    animation:kenburns 7s ease-in-out forwards;
-  }
+
+    border-radius:18px;
+
+    border:2px solid rgba(255,255,255,.18);
+
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.6);
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+}
 
   .slide:nth-child(odd) img{
     animation-name:kenburnsAlt;
@@ -464,24 +671,95 @@
     to{ transform:scale(1.12) translate(1.5%, 1%); }
   }
 
+  .progress{
+    position:absolute;
+    top:35px;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(420px,80vw);
+    height:4px;
+    border-radius:20px;
+    overflow:hidden;
+    background:rgba(255,255,255,.15);
+    z-index:30;
+}
+#bgSlides{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+}
+
+.bg-slide{
+    position:absolute;
+    inset:0;
+
+    background-size:cover;
+    background-position:center;
+
+    filter:blur(30px);
+    transform:scale(1.25);
+
+    opacity:0;
+
+    transition:opacity 2s ease;
+}
+.progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        #d9a679,
+        #fff4d2,
+        #d9a679
+    );
+    transition:width 3.2s linear;
+}
   .slideshow::after{
     content:'';
     position:absolute;
     inset:0;
     background:linear-gradient(180deg, rgba(23,8,16,0.35) 0%, rgba(23,8,16,0.1) 30%, rgba(23,8,16,0.1) 65%, rgba(23,8,16,0.75) 100%);
-    z-index:2;
+    z-index:10;
     pointer-events:none;
   }
+#flash{
 
+    position:absolute;
+
+    inset:0;
+
+    background:white;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    z-index:100;
+
+}
   .slide-caption{
     position:absolute;
-    bottom:8%;
+
     left:50%;
+
+    bottom:45px;
+
     transform:translateX(-50%);
-    z-index:3;
-    text-align:center;
-    width:min(85vw, 520px);
-  }
+
+    width:min(600px,85vw);
+
+    padding:25px;
+
+    border-radius:22px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    z-index:40;
+}
 
   .slide-caption .answer{
     font-family:'Cormorant Garamond', serif;
@@ -515,7 +793,7 @@
     top:5%;
     left:50%;
     transform:translateX(-50%);
-    z-index:3;
+    z-index:11;
     display:flex;
     gap:6px;
   }
@@ -544,10 +822,24 @@
       transform:none !important;
     }
     .slide img{ animation:none !important; }
+    .crystal-sea .facets, .crystal-sea .sheen, .gem{ animation:none !important; opacity:0.4 !important; }
   }
 </style>
 </head>
 <body>
+  <audio id="bgMusic" loop>
+    <source src="music/love.mp3" type="audio/mpeg">
+</audio>
+  
+  <button id="musicBtn" class="music-btn" aria-label="Unmute music">
+    🔇
+</button>
+  
+<div class="crystal-sea" id="crystalSea">
+  <div class="base"></div>
+  <div class="facets"></div>
+  <div class="sheen"></div>
+</div>
 
 <div class="hearts" id="hearts"></div>
 
@@ -634,27 +926,95 @@
     </div>
   </div>
 </section>
-
+  
 <div class="slideshow" id="slideshow">
-  <div class="dots" id="dots"></div>
-  <div id="slides"></div>
-  <div class="slide-caption">
-    <p class="answer">Every day I choose you again, hunny — and I always will.</p>
-    <p class="signature">Damin</p>
-  </div>
+<div id="flash"></div>
+    <!-- blurred background -->
+    <div id="bgSlides"></div>
+
+    <!-- progress bar -->
+    <div class="progress">
+        <div class="progress-fill"></div>
+    </div>
+
+    <!-- foreground photos -->
+    <div id="slides"></div>
+  
+  <div id="sparkles"></div>
+
+    <!-- glass caption -->
+    <div class="slide-caption">
+        <p class="answer">
+            Every day I choose you again, hunny —
+            and I always will.
+        </p>
+
+        <p class="signature">
+            Damin
+        </p>
+    </div>
+
 </div>
 
 <script>
-  // ambient floating hearts, shared across the whole page
+  //music button
+  const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+// Start muted
+music.muted = true;
+  
+musicBtn.addEventListener("click", () => {
+
+    if (music.paused) {
+        music.play();
+    }
+
+    music.muted = !music.muted;
+
+    if (music.muted) {
+        musicBtn.textContent = "🔇";
+        musicBtn.setAttribute("aria-label", "Unmute music");
+    } else {
+        musicBtn.textContent = "🔊";
+        musicBtn.setAttribute("aria-label", "Mute music");
+    }
+
+});
+  
+  //music play
+document.body.addEventListener("click", () => {
+    music.play();
+}, { once: true });
+  // ---------- crystalline sea: scattered twinkling diamond gems ----------
+  // EDIT: GEM_COUNT controls density of the diamond twinkle field.
+  const GEM_COUNT = 46;
+  const crystalSea = document.getElementById("crystalSea");
+
+  for (let i = 0; i < GEM_COUNT; i++){
+    const gem = document.createElement("div");
+    gem.className = "gem";
+    gem.style.left = Math.random() * 100 + "vw";
+    gem.style.top = 25 + Math.random() * 75 + "vh"; // biased toward lower half, like a sea
+    const size = 4 + Math.random() * 7;
+    gem.style.setProperty("--size", size + "px");
+    gem.style.setProperty("--dur", (3 + Math.random() * 5) + "s");
+    gem.style.setProperty("--delay", (Math.random() * 6) + "s");
+    gem.style.setProperty("--peak", (0.5 + Math.random() * 0.5).toFixed(2));
+    crystalSea.appendChild(gem);
+  }
+
+  // ---------- ambient floating hearts + a few drifting diamonds ----------
   const container = document.getElementById("hearts");
   const glyphs = ["❤", "❤", "♡"];
 
   function createHeart(){
     const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    const isDiamond = Math.random() < 0.22;
+    heart.className = "heart" + (isDiamond ? " diamond" : "");
+    heart.textContent = isDiamond ? "◆" : glyphs[Math.floor(Math.random() * glyphs.length)];
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (14 + Math.random() * 30) + "px";
+    heart.style.fontSize = (isDiamond ? 8 + Math.random() * 14 : 14 + Math.random() * 30) + "px";
     heart.style.animationDuration = (7 + Math.random() * 9) + "s";
     heart.style.opacity = Math.random() * 0.6 + 0.2;
     container.appendChild(heart);
@@ -679,6 +1039,30 @@
   document.getElementById("continueBtn").addEventListener("click", () => {
     document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
   });
+    const sparkleBox = document.getElementById("sparkles");
+
+function createSparkle(){
+
+    const s = document.createElement("div");
+
+    s.className="sparkle";
+
+    s.style.left=Math.random()*100+"%";
+
+    s.style.top=(55+Math.random()*35)+"%";
+
+    s.style.animationDuration=
+        2+Math.random()*3+"s";
+
+    sparkleBox.appendChild(s);
+
+    setTimeout(()=>{
+        s.remove();
+    },5000);
+
+}
+
+setInterval(createSparkle,180);
 
   // ---------- envelope + slideshow ----------
   const photos = [
@@ -704,6 +1088,7 @@
   photos.forEach((src, i) => {
     const slide = document.createElement("div");
     slide.className = "slide";
+    slide.style.zIndex = "0";
     slide.innerHTML = `<img src="${src}" alt="Memory ${i + 1}">`;
     slidesEl.appendChild(slide);
 
@@ -714,11 +1099,40 @@
   const slideEls = document.querySelectorAll(".slide");
   const dotEls = document.querySelectorAll(".dots span");
   let current = 0;
+  let previous = null;
   let slideTimer = null;
 
+  // EDIT: true overlay crossfade — the incoming slide is stacked above (z-index 2)
+  // and fades in over 2.6s while the outgoing slide stays exactly where it is,
+  // stacked just beneath (z-index 1), fading out on the same timeline. Both are
+  // visibly blended mid-transition instead of one cutting out before the next appears.
   function showSlide(i){
-    slideEls.forEach((s, idx) => s.classList.toggle("showing", idx === i));
+    slideEls.forEach((s, idx) => {
+      if (idx === i){
+        s.style.zIndex = "2";
+        s.classList.add("showing");
+      } else if (idx === previous){
+        s.style.zIndex = "1";
+        s.classList.remove("showing");
+      } else {
+        s.style.zIndex = "0";
+        s.classList.remove("showing");
+      }
+      const flash=document.getElementById("flash");
+
+flash.animate(
+[
+{opacity:0},
+{opacity:.6},
+{opacity:0}
+],
+{
+duration:180
+});
+    });
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
+
+    previous = i;
 
     if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
