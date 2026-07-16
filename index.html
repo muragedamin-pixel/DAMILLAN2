@@ -23,6 +23,7 @@
     --sea-deep:#1c2c4a;
     --sea-mid:#3a5b8a;
   }
+
   .music-btn{
     position:fixed;
     top:25px;
@@ -37,19 +38,17 @@
     font-size:22px;
     cursor:pointer;
     z-index:9999;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     transition:.35s;
-}
+  }
 
-.music-btn:hover{
+  .music-btn:hover{
     background:rgba(217,166,121,.25);
     transform:scale(1.08);
     box-shadow:0 0 20px rgba(217,166,121,.45);
-}
+  }
 
   *{
     margin:0;
@@ -112,12 +111,7 @@
     0%{ transform:translateY(0) scale(1); }
     100%{ transform:translateY(-2.5%) scale(1.035); }
   }
-.slide::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    backdrop-filter:blur(2px);
-}
+
   .crystal-sea .sheen{
     position:absolute;
     inset:-20% -30%;
@@ -151,50 +145,30 @@
     0%, 100%{ opacity:0; transform:rotate(45deg) scale(0.5); }
     50%{ opacity:var(--peak, 0.9); transform:rotate(45deg) scale(1.15); }
   }
+
   #sparkles{
     position:absolute;
     inset:0;
     pointer-events:none;
     overflow:hidden;
     z-index:9;
-}
+  }
 
-.sparkle{
+  .sparkle{
     position:absolute;
     width:4px;
     height:4px;
     border-radius:50%;
     background:#ffd98c;
-
-    box-shadow:
-        0 0 10px #ffd98c,
-        0 0 20px #ffd98c;
-
+    box-shadow:0 0 10px #ffd98c, 0 0 20px #ffd98c;
     animation:sparkleFloat linear forwards;
-}
+  }
 
-@keyframes sparkleFloat{
-
-    from{
-        opacity:0;
-        transform:
-            translateY(0)
-            scale(.3);
-    }
-
-    20%{
-        opacity:1;
-    }
-
-    to{
-        opacity:0;
-        transform:
-            translateY(-120px)
-            translateX(40px)
-            scale(1.3);
-    }
-
-}
+  @keyframes sparkleFloat{
+    from{ opacity:0; transform:translateY(0) scale(.3); }
+    20%{ opacity:1; }
+    to{ opacity:0; transform:translateY(-120px) translateX(40px) scale(1.3); }
+  }
 
   /* ambient floating hearts, layered above the crystal sea */
   .hearts{
@@ -203,12 +177,12 @@
     overflow:hidden;
     pointer-events:none;
     z-index:1;
-}
+  }
+
   .heart{
-    text-shadow:
-    0 0 10px #ff6b81;
-    0 0 20px #ff6b81;
-    0 0 40px #ff6b81;
+    /* fix: text-shadow layers must be comma-separated, not semicolon-separated —
+       the old rule silently dropped the 2nd and 3rd glow layers */
+    text-shadow:0 0 10px #ff6b81, 0 0 20px #ff6b81, 0 0 40px #ff6b81;
     position:absolute;
     bottom:-60px;
     color:rgba(217,166,121,0.55);
@@ -227,9 +201,6 @@
     100%{ transform:translateY(-115vh) rotate(320deg) scale(1.4); opacity:0; }
   }
 
-section.visible{
-    transform:scale(1);
-}
   section{
     position:relative;
     z-index:2;
@@ -242,7 +213,11 @@ section.visible{
     scroll-snap-align:start;
     padding:0 8vw;
     transform:scale(.96);
-    transition:1s;
+    transition:transform 1s;
+  }
+
+  section.visible{
+    transform:scale(1);
   }
 
   /* ---------- Hero ---------- */
@@ -255,34 +230,27 @@ section.visible{
     opacity:0.85;
     margin-bottom:1.5rem;
   }
-h1{
+
+  h1{
     font-family:'Bodoni Moda', serif;
     font-style:italic;
     font-weight:500;
     font-size:clamp(2.8rem, 8vw, 5.5rem);
-    color:var(--cream);
     text-shadow:0 0 40px rgba(226,104,90,0.25);
     line-height:1.1;
-    background:linear-gradient(
-        90deg,
-        #fff,
-        #ffd6a5,
-        #fff
-    );
+    background:linear-gradient(90deg, #fff, #ffd6a5, #fff);
     background-size:300%;
+    background-clip:text;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
     animation:shine 6s linear infinite;
-}
+  }
 
-@keyframes shine{
-    from{
-        background-position:-300%;
-    }
-    to{
-        background-position:300%;
-    }
-}
+  @keyframes shine{
+    from{ background-position:-300% 0; }
+    to{ background-position:300% 0; }
+  }
+
   .underline-svg{
     display:block;
     margin:0.6rem auto 0;
@@ -599,8 +567,8 @@ h1{
   }
 
   /* ---------- Slideshow overlay ---------- */
-  /* EDIT: photos now genuinely overlay one another — the incoming photo fades in
-     on top (z-index handled in JS) while the outgoing one is still fading out
+  /* EDIT: photos genuinely overlay one another — the incoming photo fades in on
+     top (z-index handled in JS) while the outgoing one is still fading out
      beneath it, so for a couple of seconds both are visibly blended together
      rather than one snapping out before the next appears. */
   .slideshow{
@@ -629,45 +597,34 @@ h1{
   .slide.showing{
     opacity:1;
   }
-.slide img{
+
+  .slide img{
     animation:kenburns 7s ease-in-out forwards;
-
     width:min(82vw,700px);
-
     height:auto;
-
     aspect-ratio:3/4;
-
     object-fit:cover;
-
     border-radius:18px;
-
     border:2px solid rgba(255,255,255,.18);
-
-    box-shadow:
-        0 30px 80px rgba(0,0,0,.6);
-
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
     position:absolute;
-
     left:50%;
     top:50%;
-
     transform:translate(-50%,-50%);
-
-}
+  }
 
   .slide:nth-child(odd) img{
     animation-name:kenburnsAlt;
   }
 
   @keyframes kenburns{
-    from{ transform:scale(1) translate(0,0); }
-    to{ transform:scale(1.12) translate(-1.5%, -1%); }
+    from{ transform:translate(-50%,-50%) scale(1); }
+    to{ transform:translate(-50%,-50%) scale(1.08) translate(-1.5%, -1%); }
   }
 
   @keyframes kenburnsAlt{
-    from{ transform:scale(1) translate(0,0); }
-    to{ transform:scale(1.12) translate(1.5%, 1%); }
+    from{ transform:translate(-50%,-50%) scale(1); }
+    to{ transform:translate(-50%,-50%) scale(1.08) translate(1.5%, 1%); }
   }
 
   .progress{
@@ -681,38 +638,38 @@ h1{
     overflow:hidden;
     background:rgba(255,255,255,.15);
     z-index:30;
-}
-#bgSlides{
+  }
+
+  .progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg, #d9a679, #fff4d2, #d9a679);
+    transition:width 3.2s linear;
+  }
+
+  #bgSlides{
     position:absolute;
     inset:0;
     overflow:hidden;
-}
+  }
 
-.bg-slide{
+  .bg-slide{
     position:absolute;
     inset:0;
-
     background-size:cover;
     background-position:center;
-
     filter:blur(30px);
     transform:scale(1.25);
-
     opacity:0;
-
     transition:opacity 2s ease;
-}
-.progress-fill{
-    width:0%;
-    height:100%;
-    background:linear-gradient(
-        90deg,
-        #d9a679,
-        #fff4d2,
-        #d9a679
-    );
-    transition:width 3.2s linear;
-}
+  }
+
+  /* fix: this class was referenced in intent but never defined, so the blurred
+     background never became visible behind the foreground photo */
+  .bg-slide.showing{
+    opacity:.55;
+  }
+
   .slideshow::after{
     content:'';
     position:absolute;
@@ -721,44 +678,29 @@ h1{
     z-index:10;
     pointer-events:none;
   }
-#flash{
 
+  #flash{
     position:absolute;
-
     inset:0;
-
     background:white;
-
     opacity:0;
-
     pointer-events:none;
-
     z-index:100;
+  }
 
-}
   .slide-caption{
     position:absolute;
-
     left:50%;
-
     bottom:45px;
-
     transform:translateX(-50%);
-
     width:min(600px,85vw);
-
     padding:25px;
-
     border-radius:22px;
-
     background:rgba(255,255,255,.08);
-
     backdrop-filter:blur(20px);
-
     border:1px solid rgba(255,255,255,.15);
-
     z-index:40;
-}
+  }
 
   .slide-caption .answer{
     font-family:'Cormorant Garamond', serif;
@@ -816,7 +758,7 @@ h1{
       animation-iteration-count:1 !important;
       transition-duration:0.01ms !important;
     }
-    .line p, .finale p.question, .go-btn, .envelope-section .prompt, .envelope{
+    .line p, .finale p.question, .go-btn, .envelope-section .prompt, .envelope, section{
       opacity:1 !important;
       transform:none !important;
     }
@@ -826,166 +768,150 @@ h1{
 </style>
 </head>
 <body>
-  <div class="dots"></div>
+
+  <!-- EDIT: point this at your own audio file path -->
   <audio id="bgMusic" loop>
     <source src="music/love.mp3" type="audio/mpeg">
-</audio>
-  
-  <button id="musicBtn" class="music-btn" aria-label="Unmute music">
-    🔇
-</button>
-  
-<div class="crystal-sea" id="crystalSea">
-  <div class="base"></div>
-  <div class="facets"></div>
-  <div class="sheen"></div>
-</div>
+  </audio>
 
-<div class="hearts" id="hearts"></div>
+  <button id="musicBtn" class="music-btn" aria-label="Unmute music">🔇</button>
 
-<section class="hero">
-  <div>
-    <p class="eyebrow">For you</p>
-    <h1>I Love You</h1>
-    <svg class="underline-svg" viewBox="0 0 380 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 16 Q 95 2, 190 14 T 372 12" />
-    </svg>
-    <p class="sub">You make every heartbeat worth it.</p>
+  <div class="crystal-sea" id="crystalSea">
+    <div class="base"></div>
+    <div class="facets"></div>
+    <div class="sheen"></div>
   </div>
-  <div class="scroll-hint">Scroll</div>
-</section>
 
-<section class="letter">
-  <div class="line">
-    <span class="mark">❤</span>
-    <p>My life lightens up every time I'm with you, my love.</p>
-  </div>
-</section>
+  <div class="hearts" id="hearts"></div>
 
-<section class="letter">
-  <div class="line">
-    <span class="mark">❤</span>
-    <p>You make me feel alive every time I think of you.</p>
-  </div>
-</section>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">For you</p>
+      <h1>I Love You</h1>
+      <svg class="underline-svg" viewBox="0 0 380 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 16 Q 95 2, 190 14 T 372 12" />
+      </svg>
+      <p class="sub">You make every heartbeat worth it.</p>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </section>
 
-<section class="letter">
-  <div class="line">
-    <span class="mark">❤</span>
-    <p>Every moment with you, I realize how much I can't live without you.</p>
-  </div>
-</section>
+  <section class="letter">
+    <div class="line">
+      <span class="mark">❤</span>
+      <p>My life lightens up every time I'm with you, my love.</p>
+    </div>
+  </section>
 
-<section class="letter">
-  <div class="line">
-    <span class="mark">❤</span>
-    <p>And every time I try to tell you how much I love you, I can't help but shout what's in my heart and mind.</p>
-  </div>
-</section>
+  <section class="letter">
+    <div class="line">
+      <span class="mark">❤</span>
+      <p>You make me feel alive every time I think of you.</p>
+    </div>
+  </section>
 
-<section class="letter">
-  <div class="line">
-    <span class="mark">❤</span>
-    <p>I just wish you could see it through my eyes, the way I see you.</p>
-  </div>
-</section>
+  <section class="letter">
+    <div class="line">
+      <span class="mark">❤</span>
+      <p>Every moment with you, I realize how much I can't live without you.</p>
+    </div>
+  </section>
 
-<section class="letter">
-  <div class="line shout">
-    <span class="mark">❤</span>
-    <p>I love you so much, hunny.</p>
-  </div>
-</section>
+  <section class="letter">
+    <div class="line">
+      <span class="mark">❤</span>
+      <p>And every time I try to tell you how much I love you, I can't help but shout what's in my heart and mind.</p>
+    </div>
+  </section>
 
-<section class="finale">
-  <div class="content">
-    <p class="question">What is bigger than our love?</p>
-    <svg class="signature-svg" viewBox="0 0 280 90" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 55 C 30 20, 45 75, 60 45 C 75 15, 85 70, 100 50 C 115 30, 130 65, 148 48 C 160 38, 175 55, 190 45 C 205 35, 220 58, 240 48" />
-    </svg>
-    <button class="go-btn" id="continueBtn">Continue</button>
-  </div>
-</section>
+  <section class="letter">
+    <div class="line">
+      <span class="mark">❤</span>
+      <p>I just wish you could see it through my eyes, the way I see you.</p>
+    </div>
+  </section>
 
-<section class="envelope-section" id="envelope-section">
-  <div>
-    <p class="prompt">Nothing is bigger than our love —<br>but here's what comes close.</p>
+  <section class="letter">
+    <div class="line shout">
+      <span class="mark">❤</span>
+      <p>I love you so much, hunny.</p>
+    </div>
+  </section>
 
-    <div class="stage" id="stage">
-      <div class="envelope">
-        <div class="envelope-body"></div>
-        <div class="letter-card">
-          <p class="eyebrow">The Answer</p>
-          <p class="answer">Every little moment with you, hunny.</p>
-          <p class="signature">Damin</p>
+  <section class="finale">
+    <div class="content">
+      <p class="question">What is bigger than our love?</p>
+      <svg class="signature-svg" viewBox="0 0 280 90" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 55 C 30 20, 45 75, 60 45 C 75 15, 85 70, 100 50 C 115 30, 130 65, 148 48 C 160 38, 175 55, 190 45 C 205 35, 220 58, 240 48" />
+      </svg>
+      <button class="go-btn" id="continueBtn">Continue</button>
+    </div>
+  </section>
+
+  <section class="envelope-section" id="envelope-section">
+    <div>
+      <p class="prompt">Nothing is bigger than our love —<br>but here's what comes close.</p>
+
+      <div class="stage" id="stage">
+        <div class="envelope">
+          <div class="envelope-body"></div>
+          <div class="letter-card">
+            <p class="eyebrow">The Answer</p>
+            <p class="answer">Every little moment with you, hunny.</p>
+            <p class="signature">Damin</p>
+          </div>
+          <button class="seal" id="sealBtn" aria-label="Open the letter">
+            <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.4 2 4.8 5.6 4.2c2-.3 3.9.6 4.9 2.2C11.5 4.8 13.4 3.9 15.4 4.2 19 4.8 20.6 8.4 19 11.7 16.5 16.3 12 21 12 21z"/></svg>
+          </button>
         </div>
-        <button class="seal" id="sealBtn" aria-label="Open the letter">
-          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.3C.4 8.4 2 4.8 5.6 4.2c2-.3 3.9.6 4.9 2.2C11.5 4.8 13.4 3.9 15.4 4.2 19 4.8 20.6 8.4 19 11.7 16.5 16.3 12 21 12 21z"/></svg>
-        </button>
       </div>
     </div>
-  </div>
-</section>
-  
-<div class="slideshow" id="slideshow">
-<div id="flash"></div>
-    <!-- blurred background -->
+  </section>
+
+  <div class="slideshow" id="slideshow">
+    <div id="flash"></div>
+
+    <!-- blurred background, mirrors the current photo -->
     <div id="bgSlides"></div>
 
     <!-- progress bar -->
     <div class="progress">
-        <div class="progress-fill"></div>
+      <div class="progress-fill" id="progressFill"></div>
     </div>
+
+    <!-- slide-position dots -->
+    <div class="dots" id="dots"></div>
 
     <!-- foreground photos -->
     <div id="slides"></div>
-  
-  <div id="sparkles"></div>
+
+    <div id="sparkles"></div>
 
     <!-- glass caption -->
     <div class="slide-caption">
-        <p class="answer">
-            Every day I choose you again, hunny —
-            and I always will.
-        </p>
-
-        <p class="signature">
-            Damin
-        </p>
+      <p class="answer">Every day I choose you again, hunny — and I always will.</p>
+      <p class="signature">Damin</p>
     </div>
-
-</div>
+  </div>
 
 <script>
-  //music button
+  // ---------- music ----------
   const music = document.getElementById("bgMusic");
-const musicBtn = document.getElementById("musicBtn");
+  const musicBtn = document.getElementById("musicBtn");
 
-// Start muted
-music.muted = true;
-  
-musicBtn.addEventListener("click", () => {
+  music.muted = true; // start muted so autoplay is allowed
 
-    if (music.paused) {
-        music.play();
-    }
-
+  musicBtn.addEventListener("click", () => {
+    if (music.paused) music.play();
     music.muted = !music.muted;
+    musicBtn.textContent = music.muted ? "🔇" : "🔊";
+    musicBtn.setAttribute("aria-label", music.muted ? "Unmute music" : "Mute music");
+  });
 
-    if (music.muted) {
-        musicBtn.textContent = "🔇";
-        musicBtn.setAttribute("aria-label", "Unmute music");
-    } else {
-        musicBtn.textContent = "🔊";
-        musicBtn.setAttribute("aria-label", "Mute music");
-    }
-
-});
-  
-  //music play
-document.body.addEventListener("click", () => {
+  document.body.addEventListener("click", () => {
     music.play();
-}, { once: true });
+  }, { once: true });
+
   // ---------- crystalline sea: scattered twinkling diamond gems ----------
   // EDIT: GEM_COUNT controls density of the diamond twinkle field.
   const GEM_COUNT = 46;
@@ -1005,7 +931,7 @@ document.body.addEventListener("click", () => {
   }
 
   // ---------- ambient floating hearts + a few drifting diamonds ----------
-  const container = document.getElementById("hearts");
+  const heartsContainer = document.getElementById("hearts");
   const glyphs = ["❤", "❤", "♡"];
 
   function createHeart(){
@@ -1017,14 +943,14 @@ document.body.addEventListener("click", () => {
     heart.style.fontSize = (isDiamond ? 8 + Math.random() * 14 : 14 + Math.random() * 30) + "px";
     heart.style.animationDuration = (7 + Math.random() * 9) + "s";
     heart.style.opacity = Math.random() * 0.6 + 0.2;
-    container.appendChild(heart);
+    heartsContainer.appendChild(heart);
     setTimeout(() => heart.remove(), 17000);
   }
 
   setInterval(createHeart, 350);
 
-  // reveal letter lines, the finale, and the envelope section as they scroll into view
-  const revealTargets = document.querySelectorAll(".line, .finale, .envelope-section");
+  // reveal sections + letter lines, the finale, and the envelope section as they scroll into view
+  const revealTargets = document.querySelectorAll("section, .line, .finale, .envelope-section");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting){
@@ -1039,30 +965,21 @@ document.body.addEventListener("click", () => {
   document.getElementById("continueBtn").addEventListener("click", () => {
     document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
   });
-    const sparkleBox = document.getElementById("sparkles");
 
-function createSparkle(){
+  // ---------- slideshow ambient sparkles ----------
+  const sparkleBox = document.getElementById("sparkles");
 
+  function createSparkle(){
     const s = document.createElement("div");
-
-    s.className="sparkle";
-
-    s.style.left=Math.random()*100+"%";
-
-    s.style.top=(55+Math.random()*35)+"%";
-
-    s.style.animationDuration=
-        2+Math.random()*3+"s";
-
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = (55 + Math.random() * 35) + "%";
+    s.style.animationDuration = (2 + Math.random() * 3) + "s";
     sparkleBox.appendChild(s);
+    setTimeout(() => s.remove(), 5000);
+  }
 
-    setTimeout(()=>{
-        s.remove();
-    },5000);
-
-}
-
-setInterval(createSparkle,180);
+  setInterval(createSparkle, 180);
 
   // ---------- envelope + slideshow ----------
   const photos = [
@@ -1082,8 +999,11 @@ setInterval(createSparkle,180);
   ];
 
   const slidesEl = document.getElementById("slides");
+  const bgSlidesEl = document.getElementById("bgSlides");
   const dotsEl = document.getElementById("dots");
   const slideshowEl = document.getElementById("slideshow");
+  const flashEl = document.getElementById("flash");
+  const progressFill = document.getElementById("progressFill");
 
   photos.forEach((src, i) => {
     const slide = document.createElement("div");
@@ -1092,11 +1012,17 @@ setInterval(createSparkle,180);
     slide.innerHTML = `<img src="${src}" alt="Memory ${i + 1}">`;
     slidesEl.appendChild(slide);
 
+    const bg = document.createElement("div");
+    bg.className = "bg-slide";
+    bg.style.backgroundImage = `url(${src})`;
+    bgSlidesEl.appendChild(bg);
+
     const dot = document.createElement("span");
     dotsEl.appendChild(dot);
   });
 
   const slideEls = document.querySelectorAll(".slide");
+  const bgEls = document.querySelectorAll(".bg-slide");
   const dotEls = document.querySelectorAll(".dots span");
   let current = 0;
   let previous = null;
@@ -1107,7 +1033,7 @@ setInterval(createSparkle,180);
   // stacked just beneath (z-index 1), fading out on the same timeline. Both are
   // visibly blended mid-transition instead of one cutting out before the next appears.
   function showSlide(i){
-    slideEls.forEach((s, idx); => {
+    slideEls.forEach((s, idx) => {
       if (idx === i){
         s.style.zIndex = "2";
         s.classList.add("showing");
@@ -1118,22 +1044,21 @@ setInterval(createSparkle,180);
         s.style.zIndex = "0";
         s.classList.remove("showing");
       }
-      const flash=document.getElementById("flash");
-
-flash.animate(
-[
-{opacity:0},
-{opacity:.6},
-{opacity:0}
-],
-{
-duration:180
-});
     });
+
+    bgEls.forEach((b, idx) => b.classList.toggle("showing", idx === i));
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
-// Update progress bar
-const progress = ((i + 1) / photos.length) * 100;
-progressFill.style.width = progress + "%";    previous = i;
+
+    // one camera-flash pulse per transition, not per slide element
+    flashEl.animate(
+      [{ opacity: 0 }, { opacity: .6 }, { opacity: 0 }],
+      { duration: 180 }
+    );
+
+    const progress = ((i + 1) / photos.length) * 100;
+    progressFill.style.width = progress + "%";
+
+    previous = i;
 
     if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
