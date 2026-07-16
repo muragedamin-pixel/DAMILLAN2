@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --wine-950:#170810;
@@ -226,7 +226,6 @@
     12%{ opacity:1; }
     100%{ transform:translateY(-115vh) rotate(320deg) scale(1.4); opacity:0; }
   }
-}
 
 section.visible{
     transform:scale(1);
@@ -630,8 +629,8 @@ h1{
   .slide.showing{
     opacity:1;
   }
-
-  .slide img{
+.slide img{
+    animation:kenburns 7s ease-in-out forwards;
 
     width:min(82vw,700px);
 
@@ -827,6 +826,7 @@ h1{
 </style>
 </head>
 <body>
+  <div class="dots"></div>
   <audio id="bgMusic" loop>
     <source src="music/love.mp3" type="audio/mpeg">
 </audio>
@@ -1107,7 +1107,7 @@ setInterval(createSparkle,180);
   // stacked just beneath (z-index 1), fading out on the same timeline. Both are
   // visibly blended mid-transition instead of one cutting out before the next appears.
   function showSlide(i){
-    slideEls.forEach((s, idx) => {
+    slideEls.forEach((s, idx); => {
       if (idx === i){
         s.style.zIndex = "2";
         s.classList.add("showing");
@@ -1131,8 +1131,9 @@ duration:180
 });
     });
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
-
-    previous = i;
+// Update progress bar
+const progress = ((i + 1) / photos.length) * 100;
+progressFill.style.width = progress + "%";    previous = i;
 
     if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
@@ -1142,6 +1143,7 @@ duration:180
 
   function startSlideshow(){
     slideshowEl.classList.add("active");
+    progressFill.style.width = "0%";
     showSlide(0);
     slideTimer = setInterval(() => {
       current++;
