@@ -914,6 +914,8 @@
 
   // ---------- crystalline sea: scattered twinkling diamond gems ----------
   // EDIT: GEM_COUNT controls density of the diamond twinkle field.
+  // EDIT: how long the last photo stays on screen before returning to the envelope
+  const FINALE_HOLD_MS = 4500;
   const GEM_COUNT = 46;
   const crystalSea = document.getElementById("crystalSea");
 
@@ -983,7 +985,7 @@
 
   // ---------- envelope + slideshow ----------
   const photos = [
-  {src:"image1.jpg", caption:""}
+  {src:"image1.jpg", caption:"❤️"}
   {src:"image2.jpg", caption:"laughter"}
   {src:"image3.jpg", caption:"smiles"}
   {src:"image4.jpg", caption:"jokes"}
@@ -995,7 +997,7 @@
   {src:"image10.jpg", caption:"fun"}
   {src:"image11.jpg", caption:"love"}
   {src:"image12.jpg", caption:"joy"}
-  {src:"image13.jpg", caption:"peace"]
+  {src:"image13.jpg", caption:"peace"}
   {src:"image16.jpg", caption:"harmony"}
   {src:"image17.jpg", caption:"strength"}
   {src:"image18.jpg", caption:"❤️"}
@@ -1006,7 +1008,7 @@
   {src:"image23.jpg", caption:"🩷"}
   {src:"image24.jpg", caption:"🌷"}
   {src:"image25.jpg", caption:"🌸"}
-    "special.jpg" 
+  {src:"special.jpg", caption:"♦️"} 
   ];
 
   const slidesEl = document.getElementById("slides");
@@ -1074,13 +1076,17 @@ photos.forEach((photo, i) => {
 
     previous = i;
 
-    if (i === photos.length - 1){
+   if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
-       const FINALE_HOLD_MS = 4500; // milliseconds — bump up or down
       clearInterval(slideTimer);
     }
   }
-
+  
+if (i === photos.length - 1){
+  slideshowEl.classList.add("finale");
+  clearInterval(slideTimer);
+  setTimeout(returnToEnvelope, FINALE_HOLD_MS);
+}  
   function startSlideshow(){
     slideshowEl.classList.add("active");
     progressFill.style.width = "0%";
