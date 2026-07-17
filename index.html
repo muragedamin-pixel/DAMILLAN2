@@ -983,30 +983,30 @@
 
   // ---------- envelope + slideshow ----------
   const photos = [
-    "image1.jpg",
-    "image2.jpg",
-    "image3.jpg",
-    "image4.jpg",
-    "image5.jpg",
-    "image6.jpg",
-    "image7.jpg",
-    "image8.jpg",
-    "image9.jpg",
-    "image10.jpg",
-    "image11.jpg",
-    "image12.jpg",
-    "image13.jpg",
-    "image16.jpg",
-    "image17.jpg",
-    "image18.jpg",
-    "image19.jpg",
-    "image20.jpg",
-    "image21.jpg",
-    "image22.jpg",
-    "image23.jpg",
-    "image24.jpg",
-    "image25.jpg",
-    "special.jpg"
+  {src:"image1.jpg", caption:""}
+  {src:"image2.jpg", caption:"laughter"}
+  {src:"image3.jpg", caption:"smiles"}
+  {src:"image4.jpg", caption:"jokes"}
+  {src:"image5.jpg", caption:"vibes"}
+  {src:"image6.jpg", caption:"everything"}
+  {src:"image7.jpg", caption:"🤍"}
+  {src:"image8.jpg", caption:"wieredness"}
+  {src:"image9.jpg", caption:"moments"}
+  {src:"image10.jpg", caption:"fun"}
+  {src:"image11.jpg", caption:"love"}
+  {src:"image12.jpg", caption:"joy"}
+  {src:"image13.jpg", caption:"peace"]
+  {src:"image16.jpg", caption:"harmony"}
+  {src:"image17.jpg", caption:"strength"}
+  {src:"image18.jpg", caption:"❤️"}
+  {src:"image19.jpg", caption:"🌹"}
+  {src:"image20.jpg", caption:"💕"}
+  {src:"image21.jpg", caption:"✨"}
+  {src:"image22.jpg", caption:"💫"}
+  {src:"image23.jpg", caption:"🩷"}
+  {src:"image24.jpg", caption:"🌷"}
+  {src:"image25.jpg", caption:"🌸"}
+    "special.jpg" 
   ];
 
   const slidesEl = document.getElementById("slides");
@@ -1015,26 +1015,26 @@
   const slideshowEl = document.getElementById("slideshow");
   const flashEl = document.getElementById("flash");
   const progressFill = document.getElementById("progressFill");
+  
+photos.forEach((photo, i) => {
+  const slide = document.createElement("div");
+  slide.className = "slide";
+  slide.style.zIndex = "0";
+  slide.innerHTML = `<img src="${photo.src}" alt="Memory ${i + 1}">`;
+  slidesEl.appendChild(slide);
 
-  photos.forEach((src, i) => {
-    const slide = document.createElement("div");
-    slide.className = "slide";
-    slide.style.zIndex = "0";
-    slide.innerHTML = `<img src="${src}" alt="Memory ${i + 1}">`;
-    slidesEl.appendChild(slide);
+  const bg = document.createElement("div");
+  bg.className = "bg-slide";
+  bg.style.backgroundImage = `url(${photo.src})`;
+  bgSlidesEl.appendChild(bg);
 
-    const bg = document.createElement("div");
-    bg.className = "bg-slide";
-    bg.style.backgroundImage = `url(${src})`;
-    bgSlidesEl.appendChild(bg);
-
-    const dot = document.createElement("span");
-    dotsEl.appendChild(dot);
-  });
-
-  const slideEls = document.querySelectorAll(".slide");
+  const dot = document.createElement("span");
+  dotsEl.appendChild(dot);
+}); 
+ const slideEls = document.querySelectorAll(".slide");
   const bgEls = document.querySelectorAll(".bg-slide");
   const dotEls = document.querySelectorAll(".dots span");
+  const captionText = document.querySelector(".slide-caption .answer");
   let current = 0;
   let previous = null;
   let slideTimer = null;
@@ -1069,10 +1069,14 @@
     const progress = ((i + 1) / photos.length) * 100;
     progressFill.style.width = progress + "%";
 
+    // swap the glass box caption to match the current photo
+    captionText.textContent = photos[i].caption;
+
     previous = i;
 
     if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
+       const FINALE_HOLD_MS = 4500; // milliseconds — bump up or down
       clearInterval(slideTimer);
     }
   }
