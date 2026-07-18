@@ -765,6 +765,36 @@
     .slide img{ animation:none !important; }
     .crystal-sea .facets, .crystal-sea .sheen, .gem{ animation:none !important; opacity:0.4 !important; }
   }
+  .gf-day-button-wrap{ text-align:center; padding:3rem 1rem; }
+.gf-day-btn{
+  font-size:1.1rem; padding:.9rem 2rem; border-radius:999px;
+  border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.08);
+  color:#fff; cursor:pointer; backdrop-filter:blur(6px);
+  transition:transform .3s ease, background .3s ease;
+}
+.gf-day-btn:hover{ transform:translateY(-2px); background:rgba(255,255,255,.16); }
+
+.gf-sheet{
+  position:fixed; inset:0; z-index:999; display:flex;
+  align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .4s ease;
+}
+.gf-sheet.open{ opacity:1; pointer-events:auto; }
+.gf-sheet-backdrop{ position:absolute; inset:0; background:rgba(10,0,10,.75); backdrop-filter:blur(4px); }
+.gf-sheet-content{
+  position:relative; max-width:420px; width:90%; padding:2.5rem 2rem;
+  border-radius:20px; text-align:center; color:#fff;
+  background:linear-gradient(160deg, rgba(255,255,255,.1), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.25);
+  transform:scale(.9); transition:transform .4s ease;
+}
+.gf-sheet.open .gf-sheet-content{ transform:scale(1); }
+.gf-sheet-close{
+  position:absolute; top:.75rem; right:.9rem; background:none; border:none;
+  color:#fff; font-size:1.2rem; cursor:pointer; opacity:.7;
+}
+.gf-sheet-close:hover{ opacity:1; }
+.gf-sheet-hearts{ font-size:2rem; margin-bottom:.5rem; }
 </style>
 </head>
 <body>
@@ -893,7 +923,23 @@
       <p class="signature">Damin</p>
     </div>
   </div>
+</body>
+<section class="gift">
+  <div class="gf-day-button-wrap">
+  <button id="gfDayBtn" class="gf-day-btn">💌 Open Today's Surprise</button>
+</div>
 
+<div id="gfDaySheet" class="gf-sheet">
+  <div class="gf-sheet-backdrop"></div>
+  <div class="gf-sheet-content">
+    <button id="gfSheetClose" class="gf-sheet-close" aria-label="Close">✕</button>
+    <div class="gf-sheet-hearts">💖</div>
+    <h2>Happy National Girlfriend's Day</h2>
+    <!-- EDIT: swap this line for your own message -->
+    <p>Every day with you feels like a celebration, but today's just for you.</p>
+  </div>
+</div>
+</section>
 <script>
   // ---------- music ----------
   const music = document.getElementById("bgMusic");
@@ -1112,6 +1158,14 @@ if (i === photos.length - 1){
     stage.classList.add("open");
     setTimeout(startSlideshow, 1300);
   });
+  // ---------- girlfriend's day surprise sheet ----------
+const gfDayBtn = document.getElementById("gfDayBtn");
+const gfDaySheet = document.getElementById("gfDaySheet");
+const gfSheetClose = document.getElementById("gfSheetClose");
+
+gfDayBtn.addEventListener("click", () => gfDaySheet.classList.add("open"));
+gfSheetClose.addEventListener("click", () => gfDaySheet.classList.remove("open"));
+gfDaySheet.querySelector(".gf-sheet-backdrop").addEventListener("click", () => gfDaySheet.classList.remove("open"));
 </script>
 
 </body>
