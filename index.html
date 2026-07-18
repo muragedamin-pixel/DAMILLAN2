@@ -831,6 +831,77 @@
   0%, 100%{ margin-left:0; }
   50%{ margin-left:20px; }
 }
+  .gift{
+  position:relative;
+  overflow:hidden;
+  min-height:100vh;
+  background:
+    /* moonlight glow */
+    radial-gradient(ellipse 60% 40% at 50% 15%, rgba(210,225,255,.25), transparent 70%),
+    /* far hill, faint blue */
+    linear-gradient(180deg, transparent 55%, rgba(160,180,220,.35) 56%, transparent 60%),
+    /* mid hill */
+    linear-gradient(180deg, transparent 68%, rgba(190,205,235,.55) 69%, transparent 74%),
+    /* night sky to snow-white gradient */
+    linear-gradient(180deg, #0b1220 0%, #1a2740 35%, #7d94b8 70%, #e8eef7 100%);
+  clip-path: none;
+}
+
+/* soft foreground snow hill silhouette, curved */
+.gift::before{
+  content:"";
+  position:absolute;
+  left:-10%; right:-10%; bottom:-5%;
+  height:45%;
+  background:#f4f8ff;
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 -10px 40px rgba(255,255,255,.4);
+  z-index:1;
+}
+
+/* a second, closer hill layer for depth */
+.gift::after{
+  content:"";
+  position:absolute;
+  left:-15%; right:-15%; bottom:-10%;
+  height:30%;
+  background:#e3ecfb;
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  z-index:2;
+}
+
+.gift-snow-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:3; /* above hills, content should be z-index:4+ */
+}
+
+.gift-snow-layer .snowflake{
+  position:absolute;
+  top:-10%;
+  color:#fff;
+  opacity:.85;
+  user-select:none;
+  animation-name: giftFall, giftSway;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+@keyframes giftFall{
+  from{ transform:translateY(-10%); }
+  to{ transform:translateY(110%); }
+}
+@keyframes giftSway{
+  0%, 100%{ margin-left:0; }
+  50%{ margin-left:16px; }
+}
+
+/* make sure actual gift content sits above the scene */
+.gift > *:not(.gift-snow-layer){
+  position:relative;
+  z-index:4;
+}
 </style>
 </head>
 <body>
@@ -960,7 +1031,7 @@
     </div>
   </div>
 </body>
-<section>
+<section class="gift">
   <div id="snowLayer" class="snow-layer"></div>
 
 <div class="gf-day-button-wrap">
@@ -1231,6 +1302,31 @@ for (let i = 0; i < SNOWFLAKE_COUNT; i++){
   flake.style.animationDelay = `${delay}s, ${delay}s`;
 
   snowLayer.appendChild(flake);
+}
+  // ---------- gift section: contained snowing hill ----------
+// EDIT: GIFT_SNOWFLAKE_COUNT controls density inside the gift section only
+const GIFT_SNOWFLAKE_COUNT = 50;
+const giftSnowGlyphs = ["❄", "❅", "❆", "•"];
+const giftSnowLayer = document.getElementById("giftSnowLayer");
+
+if (giftSnowLayer){
+  for (let i = 0; i < GIFT_SNOWFLAKE_COUNT; i++){
+    const flake = document.createElement("div");
+    flake.className = "snowflake";
+    flake.textContent = giftSnowGlyphs[Math.floor(Math.random() * giftSnowGlyphs.length)];
+    flake.style.left = Math.random() * 100 + "%";
+    flake.style.fontSize = (8 + Math.random() * 14) + "px";
+    flake.style.opacity = (0.3 + Math.random() * 0.6).toFixed(2);
+
+    const fallDuration = 7 + Math.random() * 8;
+    const swayDuration = 3 + Math.random() * 4;
+    const delay = Math.random() * fallDuration * -1;
+
+    flake.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+    flake.style.animationDelay = `${delay}s, ${delay}s`;
+
+    giftSnowLayer.appendChild(flake);
+  }
 }
 </script>
 
