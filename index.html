@@ -795,6 +795,42 @@
 }
 .gf-sheet-close:hover{ opacity:1; }
 .gf-sheet-hearts{ font-size:2rem; margin-bottom:.5rem; }
+  /* rotating snowflake icon */
+.snow-icon{
+  display:inline-block;
+  animation: spinFlake 6s linear infinite;
+}
+@keyframes spinFlake{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+/* falling snow layer */
+.snow-layer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:5; /* raise/lower to sit above or below your other layers */
+}
+.snowflake{
+  position:absolute;
+  top:-10vh;
+  color:#fff;
+  opacity:.85;
+  user-select:none;
+  animation-name: fallDown, swayFlake;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+}
+@keyframes fallDown{
+  from{ transform:translateY(-10vh); }
+  to{ transform:translateY(110vh); }
+}
+@keyframes swayFlake{
+  0%, 100%{ margin-left:0; }
+  50%{ margin-left:20px; }
+}
 </style>
 </head>
 <body>
@@ -924,7 +960,14 @@
     </div>
   </div>
 </body>
-<section class="gift">
+<section>
+  <div id="snowLayer" class="snow-layer"></div>
+
+<div class="gf-day-button-wrap">
+  <button id="gfDayBtn" class="gf-day-btn">
+    <span class="snow-icon">❄️</span> Open Today's Surprise
+  </button>
+</div>
   <div class="gf-day-button-wrap">
   <button id="gfDayBtn" class="gf-day-btn">💌 Open Today's Surprise</button>
 </div>
@@ -1166,6 +1209,29 @@ const gfSheetClose = document.getElementById("gfSheetClose");
 gfDayBtn.addEventListener("click", () => gfDaySheet.classList.add("open"));
 gfSheetClose.addEventListener("click", () => gfDaySheet.classList.remove("open"));
 gfDaySheet.querySelector(".gf-sheet-backdrop").addEventListener("click", () => gfDaySheet.classList.remove("open"));
+  // ---------- falling snow crystals ----------
+// EDIT: SNOWFLAKE_COUNT controls how many crystals fall at once
+const SNOWFLAKE_COUNT = 60;
+const snowGlyphs = ["❄", "❅", "❆"];
+const snowLayer = document.getElementById("snowLayer");
+
+for (let i = 0; i < SNOWFLAKE_COUNT; i++){
+  const flake = document.createElement("div");
+  flake.className = "snowflake";
+  flake.textContent = snowGlyphs[Math.floor(Math.random() * snowGlyphs.length)];
+  flake.style.left = Math.random() * 100 + "vw";
+  flake.style.fontSize = (10 + Math.random() * 18) + "px";
+  flake.style.opacity = (0.4 + Math.random() * 0.6).toFixed(2);
+
+  const fallDuration = 8 + Math.random() * 10;   // seconds to cross screen
+  const swayDuration = 3 + Math.random() * 4;    // seconds per side-to-side sway
+  const delay = Math.random() * fallDuration * -1; // negative delay staggers start positions
+
+  flake.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+  flake.style.animationDelay = `${delay}s, ${delay}s`;
+
+  snowLayer.appendChild(flake);
+}
 </script>
 
 </body>
