@@ -1065,12 +1065,12 @@ photos.forEach((photo, i) => {
         s.style.zIndex = "0";
         s.classList.remove("showing");
       }
-    });
 if (i === photos.length - 1){
   slideshowEl.classList.add("finale");
   clearInterval(slideTimer);
   setTimeout(returnToEnvelope, FINALE_HOLD_MS);
 }  
+ });
     bgEls.forEach((b, idx) => b.classList.toggle("showing", idx === i));
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
 
