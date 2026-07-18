@@ -1030,18 +1030,14 @@
       <p class="signature">Damin</p>
     </div>
   </div>
-</body>
+
 <section class="gift">
-  <div id="snowLayer" class="snow-layer"></div>
+<div id="giftSnowLayer" class="gift-snow-layer"></div>
 
 <div class="gf-day-button-wrap">
   <button id="gfDayBtn" class="gf-day-btn">
     <span class="snow-icon">❄️</span> Open Today's Surprise
   </button>
-</div>
-  <div class="gf-day-button-wrap">
-  <button id="gfDayBtn" class="gf-day-btn">💌 Open Today's Surprise</button>
-</div>
 
 <div id="gfDaySheet" class="gf-sheet">
   <div class="gf-sheet-backdrop"></div>
@@ -1151,8 +1147,8 @@
   {src:"image4.jpg", caption:"jokes"},
   {src:"image5.jpg", caption:"vibes"},
   {src:"image6.jpg", caption:"everything"},
-  {src:"image7.jpg", caption:"🤍"},,
-  {src:"image8.jpg", caption:"wieredness"},
+  {src:"image7.jpg", caption:"🤍"},
+  {src:"image8.jpg", caption:"weiredness"},
   {src:"image9.jpg", caption:"moments"},
   {src:"image10.jpg", caption:"fun"},
   {src:"image11.jpg", caption:"love"},
@@ -1225,11 +1221,6 @@ photos.forEach((photo, i) => {
         s.style.zIndex = "0";
         s.classList.remove("showing");
       }
-if (i === photos.length - 1){
-  slideshowEl.classList.add("finale");
-  clearInterval(slideTimer);
-  setTimeout(returnToEnvelope, FINALE_HOLD_MS);
-}  
  });
     bgEls.forEach((b, idx) => b.classList.toggle("showing", idx === i));
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
@@ -1251,9 +1242,11 @@ if (i === photos.length - 1){
    if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
       clearInterval(slideTimer);
+      setTimeout(returnToEnvelope, FINALE_HOLD_MS); // add this line
     }
   }
-  
+  previous = i;
+
   function startSlideshow(){
     slideshowEl.classList.add("active");
     progressFill.style.width = "0%";
