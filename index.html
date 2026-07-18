@@ -805,32 +805,7 @@
   to{ transform:rotate(360deg); }
 }
 
-/* falling snow layer */
-.gift-snow-layer{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:5; /* raise/lower to sit above or below your other layers */
-}
-.gift-snow-layer .snowflake{
-  position:absolute;
-  top:-10vh;
-  color:#fff;
-  opacity:.85;
-  user-select:none;
-  animation-name: fallDown, swayFlake;
-  animation-timing-function: linear, ease-in-out;
-  animation-iteration-count: infinite, infinite;
-}
-@keyframes fallDown{
-  from{ transform:translateY(-10vh); }
-  to{ transform:translateY(110vh); }
-}
-@keyframes swayFlake{
-  0%, 100%{ margin-left:0; }
-  50%{ margin-left:20px; }
-}
+
   .gift{
   position:relative;
   overflow:hidden;
@@ -890,7 +865,7 @@
 }
 @keyframes giftFall{
   from{ transform:translateY(-10%); }
-  to{ transform:translateY(110%); }
+  to{ transform:translateY(120%); }
 }
 @keyframes giftSway{
   0%, 100%{ margin-left:0; }
