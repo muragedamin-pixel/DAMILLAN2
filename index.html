@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,9 +21,6 @@
     --blush:#f3d9cf;
     --cream:#faf1ec;
     --ember:#e2685a;
-    /* EDIT: this is the "sea" accent — a deep jewel-toned blue that mixes into the
-       wine background to read as a crystalline sea rather than plain water. Nudge
-       toward navy for a moodier sea, or teal for a brighter one. */
     --sea-deep:#1c2c4a;
     --sea-mid:#3a5b8a;
   }
@@ -77,10 +75,6 @@
 
   body::-webkit-scrollbar{ display:none; }
 
-  /* ---------- Crystalline sea background ---------- */
-  /* EDIT: sits behind everything (z-index 0), a slowly breathing lattice of facet
-     lines and a light sheen sweeping across it, with tiny diamond "gems" twinkling
-     like light caught on a jeweled sea. Hearts (z-index 1) float above it. */
   .crystal-sea{
     position:fixed;
     inset:0;
@@ -173,7 +167,6 @@
     to{ opacity:0; transform:translateY(-120px) translateX(40px) scale(1.3); }
   }
 
-  /* ambient floating hearts, layered above the crystal sea */
   .hearts{
     position:fixed;
     inset:0;
@@ -183,8 +176,6 @@
   }
 
   .heart{
-    /* fix: text-shadow layers must be comma-separated, not semicolon-separated —
-       the old rule silently dropped the 2nd and 3rd glow layers */
     text-shadow:0 0 10px #ff6b81, 0 0 20px #ff6b81, 0 0 40px #ff6b81;
     position:absolute;
     bottom:-60px;
@@ -223,7 +214,6 @@
     transform:scale(1);
   }
 
-  /* ---------- Hero ---------- */
   .hero .eyebrow{
     font-family:'Cormorant Garamond', serif;
     letter-spacing:0.35em;
@@ -317,7 +307,6 @@
     to{ opacity:1; transform:translateY(0); }
   }
 
-  /* ---------- Letter lines ---------- */
   .line{
     max-width:640px;
   }
@@ -351,7 +340,6 @@
     color:var(--rose-gold);
   }
 
-  /* ---------- Finale ---------- */
   .finale .content{
     max-width:600px;
   }
@@ -423,7 +411,6 @@
     outline-offset:3px;
   }
 
-  /* ---------- Envelope section ---------- */
   .envelope-section .prompt{
     text-align:center;
     font-family:'Cormorant Garamond', serif;
@@ -569,11 +556,6 @@
     color:var(--ember);
   }
 
-  /* ---------- Slideshow overlay ---------- */
-  /* EDIT: photos genuinely overlay one another — the incoming photo fades in on
-     top (z-index handled in JS) while the outgoing one is still fading out
-     beneath it, so for a couple of seconds both are visibly blended together
-     rather than one snapping out before the next appears. */
   .slideshow{
     position:fixed;
     inset:0;
@@ -667,8 +649,6 @@
     transition:opacity 2s ease;
   }
 
-  /* fix: this class was referenced in intent but never defined, so the blurred
-     background never became visible behind the foreground photo */
   .bg-slide.showing{
     opacity:.55;
   }
@@ -777,6 +757,10 @@
 }
 .gf-day-btn:hover{ transform:translateY(-2px); background:rgba(255,255,255,.16); }
 
+/* EDIT: this sheet is a direct child of <body> (not inside .gift) so its
+   position:fixed centers on the real viewport — an ancestor with a CSS
+   transform (like the section rule above) would otherwise hijack fixed
+   positioning and center it inside that ancestor instead of the screen. */
 .gf-sheet{
   position:fixed; inset:0; z-index:999; display:flex;
   align-items:center; justify-content:center;
@@ -798,8 +782,38 @@
 }
 .gf-sheet-close:hover{ opacity:1; }
 .gf-sheet-hearts{ font-size:2rem; margin-bottom:.5rem; }
-  /* rotating snowflake icon */
-.snow-icon{
+
+/* EDIT: her photo shown inside the surprise sheet — swap the src in the HTML below */
+.gf-sheet-photo{
+  width:140px;
+  height:140px;
+  object-fit:cover;
+  border-radius:50%;
+  border:3px solid rgba(255,255,255,.5);
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  margin:0 auto 1.2rem;
+  display:block;
+}
+
+/* EDIT: WORD_LIST in the JS controls what cycles through here */
+.gf-word-cycle{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.4rem;
+  color:#ffd6a5;
+  min-height:2rem;
+  opacity:0;
+  animation:wordFade 2.6s ease-in-out infinite;
+}
+
+@keyframes wordFade{
+  0%{ opacity:0; transform:translateY(8px); }
+  15%{ opacity:1; transform:translateY(0); }
+  80%{ opacity:1; transform:translateY(0); }
+  100%{ opacity:0; transform:translateY(-8px); }
+}
+
+  .snow-icon{
   display:inline-block;
   animation: spinFlake 6s linear infinite;
 }
@@ -814,18 +828,13 @@
   overflow:hidden;
   min-height:100vh;
   background:
-    /* moonlight glow */
     radial-gradient(ellipse 60% 40% at 50% 15%, rgba(210,225,255,.25), transparent 70%),
-    /* far hill, faint blue */
     linear-gradient(180deg, transparent 55%, rgba(160,180,220,.35) 56%, transparent 60%),
-    /* mid hill */
     linear-gradient(180deg, transparent 68%, rgba(190,205,235,.55) 69%, transparent 74%),
-    /* night sky to snow-white gradient */
     linear-gradient(180deg, #0b1220 0%, #1a2740 35%, #7d94b8 70%, #e8eef7 100%);
   clip-path: none;
 }
 
-/* soft foreground snow hill silhouette, curved */
 .gift::before{
   content:"";
   position:absolute;
@@ -837,7 +846,6 @@
   z-index:1;
 }
 
-/* a second, closer hill layer for depth */
 .gift::after{
   content:"";
   position:absolute;
@@ -853,7 +861,7 @@
   inset:0;
   pointer-events:none;
   overflow:hidden;
-  z-index:3; /* above hills, content should be z-index:4+ */
+  z-index:3;
 }
 
 .gift-snow-layer .snowflake{
@@ -867,22 +875,20 @@
   animation-iteration-count: infinite, infinite;
 }
 @keyframes giftFall{
-  from{ transform:translateY(-10%); }
-  to{ transform:translateY(120%); }
+  from{ transform:translateY(-10vh); }
+  to{ transform:translateY(120vh); }
 }
 @keyframes giftSway{
   0%, 100%{ margin-left:0; }
   50%{ margin-left:16px; }
 }
 
-/* make sure actual gift content sits above the scene */
 .gift > *:not(.gift-snow-layer){
   position:relative;
   z-index:4;
 }
 </style>
 
-  <!-- EDIT: point this at your own audio file path -->
   <audio id="bgMusic" loop preload="metadata">
     <source src="chai-ya-saa-kumi.mp3">
   </audio>
@@ -984,23 +990,18 @@
   <div class="slideshow" id="slideshow">
     <div id="flash"></div>
 
-    <!-- blurred background, mirrors the current photo -->
     <div id="bgSlides"></div>
 
-    <!-- progress bar -->
     <div class="progress">
       <div class="progress-fill" id="progressFill"></div>
     </div>
 
-    <!-- slide-position dots -->
     <div class="dots" id="dots"></div>
 
-    <!-- foreground photos -->
     <div id="slides"></div>
 
     <div id="sparkles"></div>
 
-    <!-- glass caption -->
     <div class="slide-caption">
       <p class="answer">Every day I choose you again, hunny — and I always will.</p>
       <p class="signature">Damin</p>
@@ -1015,23 +1016,27 @@
     <span class="snow-icon">❄️</span> Open Today's Surprise
   </button>
 </div>
+</section>
+
+<!-- EDIT: moved out of .gift so position:fixed centers on the true viewport,
+     not inside a transformed <section> ancestor -->
 <div id="gfDaySheet" class="gf-sheet">
   <div class="gf-sheet-backdrop"></div>
   <div class="gf-sheet-content">
     <button id="gfSheetClose" class="gf-sheet-close" aria-label="Close">✕</button>
-    <div class="gf-sheet-hearts">💖</div>
+    <!-- EDIT: point this at her actual photo filename -->
+    <img src="her-photo.jpg" alt="Her" class="gf-sheet-photo">
     <h2>Happy National Girlfriend's Day</h2>
-    <!-- EDIT: swap this line for your own message -->
-    <p>Every day with you feels like a celebration, but today's just for you.</p>
+    <!-- EDIT: change these words — they cycle one at a time under her photo -->
+    <p id="gfWordCycle" class="gf-word-cycle">beautiful</p>
   </div>
 </div>
-</section>
+
 <script>
-  // ---------- music ----------
   const music = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicBtn");
 
-  music.muted = true; // start muted so autoplay is allowed
+  music.muted = true;
 
   musicBtn.addEventListener("click", () => {
     if (music.paused) music.play();
@@ -1044,9 +1049,6 @@
     music.play();
   }, { once: true });
 
-  // ---------- crystalline sea: scattered twinkling diamond gems ----------
-  // EDIT: GEM_COUNT controls density of the diamond twinkle field.
-  // EDIT: how long the last photo stays on screen before returning to the envelope
   const FINALE_HOLD_MS = 4500;
   const GEM_COUNT = 46;
   const crystalSea = document.getElementById("crystalSea");
@@ -1055,7 +1057,7 @@
     const gem = document.createElement("div");
     gem.className = "gem";
     gem.style.left = Math.random() * 100 + "vw";
-    gem.style.top = 25 + Math.random() * 75 + "vh"; // biased toward lower half, like a sea
+    gem.style.top = 25 + Math.random() * 75 + "vh";
     const size = 4 + Math.random() * 7;
     gem.style.setProperty("--size", size + "px");
     gem.style.setProperty("--dur", (3 + Math.random() * 5) + "s");
@@ -1064,7 +1066,6 @@
     crystalSea.appendChild(gem);
   }
 
-  // ---------- ambient floating hearts + a few drifting diamonds ----------
   const heartsContainer = document.getElementById("hearts");
   const glyphs = ["❤", "❤", "♡"];
 
@@ -1083,7 +1084,6 @@
 
   setInterval(createHeart, 350);
 
-  // reveal sections + letter lines, the finale, and the envelope section as they scroll into view
   const revealTargets = document.querySelectorAll("section, .line, .finale, .envelope-section");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1095,12 +1095,10 @@
 
   revealTargets.forEach(el => observer.observe(el));
 
-  // "Continue" scrolls down to the envelope instead of leaving the page
   document.getElementById("continueBtn").addEventListener("click", () => {
     document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
   });
 
-  // ---------- slideshow ambient sparkles ----------
   const sparkleBox = document.getElementById("sparkles");
 
   function createSparkle(){
@@ -1115,7 +1113,6 @@
 
   setInterval(createSparkle, 180);
 
-  // ---------- envelope + slideshow ----------
   const photos = [
   {src:"image1.jpg", caption:"❤️"},
   {src:"image2.jpg", caption:"laughter"},
@@ -1173,10 +1170,6 @@ photos.forEach((photo, i) => {
   let previous = null;
   let slideTimer = null;
 
-  // EDIT: true overlay crossfade — the incoming slide is stacked above (z-index 2)
-  // and fades in over 2.6s while the outgoing slide stays exactly where it is,
-  // stacked just beneath (z-index 1), fading out on the same timeline. Both are
-  // visibly blended mid-transition instead of one cutting out before the next appears.
   function returnToEnvelope(){
   slideshowEl.classList.remove("active", "finale");
   stage.classList.remove("open");
@@ -1201,7 +1194,6 @@ photos.forEach((photo, i) => {
     bgEls.forEach((b, idx) => b.classList.toggle("showing", idx === i));
     dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
 
-    // one camera-flash pulse per transition, not per slide element
     flashEl.animate(
       [{ opacity: 0 }, { opacity: .6 }, { opacity: 0 }],
       { duration: 180 }
@@ -1210,7 +1202,6 @@ photos.forEach((photo, i) => {
     const progress = ((i + 1) / photos.length) * 100;
     progressFill.style.width = progress + "%";
 
-    // swap the glass box caption to match the current photo
     captionText.textContent = photos[i].caption;
 
     previous = i;
@@ -1218,7 +1209,7 @@ photos.forEach((photo, i) => {
    if (i === photos.length - 1){
       slideshowEl.classList.add("finale");
       clearInterval(slideTimer);
-      setTimeout(returnToEnvelope, FINALE_HOLD_MS); // add this line
+      setTimeout(returnToEnvelope, FINALE_HOLD_MS);
     }
   }
 
@@ -1232,7 +1223,6 @@ photos.forEach((photo, i) => {
     }, 3200);
   }
 
-  // click the wax seal to open the envelope, then hand off to the slideshow
   const stage = document.getElementById("stage");
   const sealBtn = document.getElementById("sealBtn");
 
@@ -1240,7 +1230,7 @@ photos.forEach((photo, i) => {
     stage.classList.add("open");
     setTimeout(startSlideshow, 1300);
   });
-  // ---------- girlfriend's day surprise sheet ----------
+
 const gfDayBtn = document.getElementById("gfDayBtn");
 const gfDaySheet = document.getElementById("gfDaySheet");
 const gfSheetClose = document.getElementById("gfSheetClose");
@@ -1249,8 +1239,18 @@ gfDayBtn.addEventListener("click", () => gfDaySheet.classList.add("open"));
 gfSheetClose.addEventListener("click", () => gfDaySheet.classList.remove("open"));
 gfDaySheet.querySelector(".gf-sheet-backdrop").addEventListener("click", () => gfDaySheet.classList.remove("open"));
 
-// ---------- gift section: contained snowing hill ----------
-// EDIT: GIFT_SNOWFLAKE_COUNT controls density inside the gift section only
+const WORD_LIST = ["beautiful", "my everything", "my favorite person", "so loved", "mine forever"];
+const WORD_INTERVAL_MS = 2600;
+const gfWordCycle = document.getElementById("gfWordCycle");
+let wordIndex = 0;
+
+if (gfWordCycle){
+  setInterval(() => {
+    wordIndex = (wordIndex + 1) % WORD_LIST.length;
+    gfWordCycle.textContent = WORD_LIST[wordIndex];
+  }, WORD_INTERVAL_MS);
+}
+
 const GIFT_SNOWFLAKE_COUNT = 50;
 const giftSnowGlyphs = ["❄", "❅", "❆", "•"];
 const giftSnowLayer = document.getElementById("giftSnowLayer");
