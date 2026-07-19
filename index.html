@@ -1026,7 +1026,254 @@
   </div>
 </div>
 </section>
+<script>
+  // ---------- music ----------
+  const music = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicBtn");
 
+  music.muted = true; // start muted so autoplay is allowed
 
+  musicBtn.addEventListener("click", () => {
+    if (music.paused) music.play();
+    music.muted = !music.muted;
+    musicBtn.textContent = music.muted ? "🔇" : "🔊";
+    musicBtn.setAttribute("aria-label", music.muted ? "Unmute music" : "Mute music");
+  });
+
+  document.body.addEventListener("click", () => {
+    music.play();
+  }, { once: true });
+
+  // ---------- crystalline sea: scattered twinkling diamond gems ----------
+  // EDIT: GEM_COUNT controls density of the diamond twinkle field.
+  // EDIT: how long the last photo stays on screen before returning to the envelope
+  const FINALE_HOLD_MS = 4500;
+  const GEM_COUNT = 46;
+  const crystalSea = document.getElementById("crystalSea");
+
+  for (let i = 0; i < GEM_COUNT; i++){
+    const gem = document.createElement("div");
+    gem.className = "gem";
+    gem.style.left = Math.random() * 100 + "vw";
+    gem.style.top = 25 + Math.random() * 75 + "vh"; // biased toward lower half, like a sea
+    const size = 4 + Math.random() * 7;
+    gem.style.setProperty("--size", size + "px");
+    gem.style.setProperty("--dur", (3 + Math.random() * 5) + "s");
+    gem.style.setProperty("--delay", (Math.random() * 6) + "s");
+    gem.style.setProperty("--peak", (0.5 + Math.random() * 0.5).toFixed(2));
+    crystalSea.appendChild(gem);
+  }
+
+  // ---------- ambient floating hearts + a few drifting diamonds ----------
+  const heartsContainer = document.getElementById("hearts");
+  const glyphs = ["❤", "❤", "♡"];
+
+  function createHeart(){
+    const heart = document.createElement("div");
+    const isDiamond = Math.random() < 0.22;
+    heart.className = "heart" + (isDiamond ? " diamond" : "");
+    heart.textContent = isDiamond ? "◆" : glyphs[Math.floor(Math.random() * glyphs.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (isDiamond ? 8 + Math.random() * 14 : 14 + Math.random() * 30) + "px";
+    heart.style.animationDuration = (7 + Math.random() * 9) + "s";
+    heart.style.opacity = Math.random() * 0.6 + 0.2;
+    heartsContainer.appendChild(heart);
+    setTimeout(() => heart.remove(), 17000);
+  }
+
+  setInterval(createHeart, 350);
+
+  // reveal sections + letter lines, the finale, and the envelope section as they scroll into view
+  const revealTargets = document.querySelectorAll("section, .line, .finale, .envelope-section");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.5 });
+
+  revealTargets.forEach(el => observer.observe(el));
+
+  // "Continue" scrolls down to the envelope instead of leaving the page
+  document.getElementById("continueBtn").addEventListener("click", () => {
+    document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
+  });
+
+  // ---------- slideshow ambient sparkles ----------
+  const sparkleBox = document.getElementById("sparkles");
+
+  function createSparkle(){
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = (55 + Math.random() * 35) + "%";
+    s.style.animationDuration = (2 + Math.random() * 3) + "s";
+    sparkleBox.appendChild(s);
+    setTimeout(() => s.remove(), 5000);
+  }
+
+  setInterval(createSparkle, 180);
+
+  // ---------- envelope + slideshow ----------
+  const photos = [
+  {src:"image1.jpg", caption:"❤️"},
+  {src:"image2.jpg", caption:"laughter"},
+  {src:"image3.jpg", caption:"smiles"},
+  {src:"image4.jpg", caption:"jokes"},
+  {src:"image5.jpg", caption:"vibes"},
+  {src:"image6.jpg", caption:"everything"},
+  {src:"image7.jpg", caption:"🤍"},
+  {src:"image8.jpg", caption:"weiredness"},
+  {src:"image9.jpg", caption:"moments"},
+  {src:"image10.jpg", caption:"fun"},
+  {src:"image11.jpg", caption:"love"},
+  {src:"image12.jpg", caption:"joy"},
+  {src:"image13.jpg", caption:"peace"},
+  {src:"image16.jpg", caption:"harmony"},
+  {src:"image17.jpg", caption:"strength"},
+  {src:"image18.jpg", caption:"❤️"},
+  {src:"image19.jpg", caption:"🌹"},
+  {src:"image20.jpg", caption:"💕"},
+  {src:"image21.jpg", caption:"✨"},
+  {src:"image22.jpg", caption:"💫"},
+  {src:"image23.jpg", caption:"🩷"},
+  {src:"image24.jpg", caption:"🌷"},
+  {src:"image25.jpg", caption:"🌸"},
+  {src:"special.jpg", caption:"♦️"} 
+  ];
+
+  const slidesEl = document.getElementById("slides");
+  const bgSlidesEl = document.getElementById("bgSlides");
+  const dotsEl = document.getElementById("dots");
+  const slideshowEl = document.getElementById("slideshow");
+  const flashEl = document.getElementById("flash");
+  const progressFill = document.getElementById("progressFill");
+  
+photos.forEach((photo, i) => {
+  const slide = document.createElement("div");
+  slide.className = "slide";
+  slide.style.zIndex = "0";
+  slide.innerHTML = `<img src="${photo.src}" alt="Memory ${i + 1}">`;
+  slidesEl.appendChild(slide);
+
+  const bg = document.createElement("div");
+  bg.className = "bg-slide";
+  bg.style.backgroundImage = `url(${photo.src})`;
+  bgSlidesEl.appendChild(bg);
+
+  const dot = document.createElement("span");
+  dotsEl.appendChild(dot);
+}); 
+ const slideEls = document.querySelectorAll(".slide");
+  const bgEls = document.querySelectorAll(".bg-slide");
+  const dotEls = document.querySelectorAll(".dots span");
+  const captionText = document.querySelector(".slide-caption .answer");
+  let current = 0;
+  let previous = null;
+  let slideTimer = null;
+
+  // EDIT: true overlay crossfade — the incoming slide is stacked above (z-index 2)
+  // and fades in over 2.6s while the outgoing slide stays exactly where it is,
+  // stacked just beneath (z-index 1), fading out on the same timeline. Both are
+  // visibly blended mid-transition instead of one cutting out before the next appears.
+  function returnToEnvelope(){
+  slideshowEl.classList.remove("active", "finale");
+  stage.classList.remove("open");
+  progressFill.style.width = "0%";
+  current = 0;
+  previous = null;
+  document.getElementById("envelope-section").scrollIntoView({ behavior: "smooth" });
+}
+  function showSlide(i){
+    slideEls.forEach((s, idx) => {
+      if (idx === i){
+        s.style.zIndex = "2";
+        s.classList.add("showing");
+      } else if (idx === previous){
+        s.style.zIndex = "1";
+        s.classList.remove("showing");
+      } else {
+        s.style.zIndex = "0";
+        s.classList.remove("showing");
+      }
+ });
+    bgEls.forEach((b, idx) => b.classList.toggle("showing", idx === i));
+    dotEls.forEach((d, idx) => d.classList.toggle("on", idx === i));
+
+    // one camera-flash pulse per transition, not per slide element
+    flashEl.animate(
+      [{ opacity: 0 }, { opacity: .6 }, { opacity: 0 }],
+      { duration: 180 }
+    );
+
+    const progress = ((i + 1) / photos.length) * 100;
+    progressFill.style.width = progress + "%";
+
+    // swap the glass box caption to match the current photo
+    captionText.textContent = photos[i].caption;
+
+    previous = i;
+
+   if (i === photos.length - 1){
+      slideshowEl.classList.add("finale");
+      clearInterval(slideTimer);
+      setTimeout(returnToEnvelope, FINALE_HOLD_MS); // add this line
+    }
+  }
+
+  function startSlideshow(){
+    slideshowEl.classList.add("active");
+    progressFill.style.width = "0%";
+    showSlide(0);
+    slideTimer = setInterval(() => {
+      current++;
+      showSlide(current);
+    }, 3200);
+  }
+
+  // click the wax seal to open the envelope, then hand off to the slideshow
+  const stage = document.getElementById("stage");
+  const sealBtn = document.getElementById("sealBtn");
+
+  sealBtn.addEventListener("click", () => {
+    stage.classList.add("open");
+    setTimeout(startSlideshow, 1300);
+  });
+  // ---------- girlfriend's day surprise sheet ----------
+const gfDayBtn = document.getElementById("gfDayBtn");
+const gfDaySheet = document.getElementById("gfDaySheet");
+const gfSheetClose = document.getElementById("gfSheetClose");
+
+gfDayBtn.addEventListener("click", () => gfDaySheet.classList.add("open"));
+gfSheetClose.addEventListener("click", () => gfDaySheet.classList.remove("open"));
+gfDaySheet.querySelector(".gf-sheet-backdrop").addEventListener("click", () => gfDaySheet.classList.remove("open"));
+
+// ---------- gift section: contained snowing hill ----------
+// EDIT: GIFT_SNOWFLAKE_COUNT controls density inside the gift section only
+const GIFT_SNOWFLAKE_COUNT = 50;
+const giftSnowGlyphs = ["❄", "❅", "❆", "•"];
+const giftSnowLayer = document.getElementById("giftSnowLayer");
+
+if (giftSnowLayer){
+  for (let i = 0; i < GIFT_SNOWFLAKE_COUNT; i++){
+    const flake = document.createElement("div");
+    flake.className = "snowflake";
+    flake.textContent = giftSnowGlyphs[Math.floor(Math.random() * giftSnowGlyphs.length)];
+    flake.style.left = Math.random() * 100 + "%";
+    flake.style.fontSize = (8 + Math.random() * 14) + "px";
+    flake.style.opacity = (0.3 + Math.random() * 0.6).toFixed(2);
+
+    const fallDuration = 7 + Math.random() * 8;
+    const swayDuration = 3 + Math.random() * 4;
+    const delay = Math.random() * fallDuration * -1;
+
+    flake.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+    flake.style.animationDelay = `${delay}s, ${delay}s`;
+
+    giftSnowLayer.appendChild(flake);
+  }
+}
+</script>
 </body>
 </html>
